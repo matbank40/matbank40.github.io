@@ -19,23 +19,23 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Задание 14 ЕГЭ по профильной математике: стереометрическая задача", "educationalLevel": "11 класс", "inLanguage": "ru", "learningResourceType": "Problem set", "isAccessibleForFree": true, "about": "ЕГЭ по математике, профильный уровень"}</script>
 </head>
 <body>
-<div class="wrap">
-<header class="bar">
+<header class="bar"><div class="wrap">
   <a class="logo" href="../"><i></i>Банк ЕГЭ · Профиль</a>
   <nav><a href="../#part1">Часть 1</a><a href="../#part2">Часть 2</a></nav>
-</header>
+</div></header>
 
+<main class="wrap">
 
-<section class="card page-head">
-  <a class="back" href="../">← Все задания</a>
-  <h1><span>14</span>Стереометрическая задача</h1>
+<section class="head">
+  <a class="back" href="../">← Все номера</a>
+  <h1><span>14.</span> Стереометрическая задача</h1>
   <div class="row">
     <span class="count">69 задач</span>
     <a class="btn" href="../pdf/ege-profil-zadanie-14.pdf" download="14_Стереометрическая_задача.pdf">Скачать PDF</a>
   </div>
 </section>
 
-<section class="card doc">
+<section class="doc">
   
   <article class="task" id="t30ED04">
     <a class="idx" href="#t30ED04" title="Банк ФИПИ: 30ED04">1</a>
@@ -391,13 +391,32 @@
 </section>
 
 <nav class="pager">
-  <a class="card" href="../zadanie-13/"><span>← 13</span>Уравнения</a>
-  <a class="card right" href="../zadanie-15/"><span>15 →</span>Неравенства</a>
+  <a href="../zadanie-13/"><span>← 13</span>Уравнения</a>
+  <a class="right" href="../zadanie-15/"><span>15 →</span>Неравенства</a>
 </nav>
 
+<div class="zoom" id="zoom"><img alt=""></div>
+<script>
+(function () {
+  var z = document.getElementById("zoom"), zi = z.querySelector("img");
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (t.tagName === "IMG" && t.classList.contains("fig")) {
+      // увеличиваем до 2× одним коэффициентом по обеим осям, но не больше экрана
+      var k = Math.min(2, (innerWidth - 48) / t.naturalWidth, (innerHeight - 48) / t.naturalHeight);
+      zi.src = t.src;
+      zi.style.width = t.naturalWidth * k + "px";
+      zi.style.height = t.naturalHeight * k + "px";
+      z.classList.add("on");
+    } else if (z.contains(t)) { z.classList.remove("on"); }
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") z.classList.remove("on"); });
+})();
+</script>
 
-<footer>Задания — открытый банк ФИПИ, fipi.ru</footer>
-</div>
+
+<footer>Источник: открытый банк заданий ФИПИ, fipi.ru</footer>
+</main>
 
 </body>
 </html>
