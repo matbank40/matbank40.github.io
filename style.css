@@ -1,143 +1,118 @@
-/* Шрифты ParaType (PT Sans, PT Sans Narrow, PT Serif), лицензия OFL — см. fonts/OFL.txt */
-@font-face { font-family: "PT Sans"; src: url("fonts/PTSans-Regular.woff") format("woff"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "PT Sans"; src: url("fonts/PTSans-Bold.woff") format("woff"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "PT Sans Narrow"; src: url("fonts/PTSansNarrow-Bold.woff") format("woff"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "PT Serif"; src: url("fonts/PTSerif-Regular.woff") format("woff"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "PT Serif"; src: url("fonts/PTSerif-Italic.woff") format("woff"); font-weight: 400; font-style: italic; font-display: swap; }
-@font-face { font-family: "PT Serif"; src: url("fonts/PTSerif-Bold.woff") format("woff"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Regular.woff") format("woff"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-SemiBold.woff") format("woff"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Bold.woff") format("woff"); font-weight: 700; font-display: swap; }
 
-/*  Бумага и клетка школьной тетради, графит, красные поля, синяя ручка  */
 :root {
   color-scheme: light;
-  --paper: #fdfdfc;
-  --desk: #eef1f4;
-  --grid: #dfe7ef;
-  --graphite: #1f2328;
-  --pencil: #697079;
-  --margin: #e0625f;
-  --pen: #2547a8;
-  --cell: 16px;
+  --bg: #f2f3f5;
+  --card: #ffffff;
+  --ink: #16181d;
+  --mute: #6f7480;
+  --line: #e7e8ec;
+  --bar: #23252b;
+  --accent: #e3000f;
+  --link: #2b4fd8;
+  --radius: 18px;
+  --shadow: 0 1px 2px rgba(20, 22, 28, .04), 0 6px 24px rgba(20, 22, 28, .06);
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--desk); color: var(--graphite); font: 17px/1.5 "PT Sans", Arial, sans-serif; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 "Inter", "Helvetica Neue", Arial, sans-serif; }
 a { color: inherit; }
-a:focus-visible, .row:focus-within { outline: 2px solid var(--pen); outline-offset: 2px; }
-.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+a:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 20px 20px 0; }
+.card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); }
 
-/* шапка */
-.bar { background: var(--paper); border-bottom: 2px solid var(--graphite); }
-.bar .wrap { display: flex; justify-content: space-between; align-items: center; min-height: 64px; gap: 16px; }
-.logo { text-decoration: none; line-height: 1.15; }
-.logo b { display: block; font: 700 22px/1 "PT Sans Narrow", "PT Sans", sans-serif; letter-spacing: .01em; }
-.logo span { font-size: 14px; color: var(--pencil); }
-.bar nav { display: flex; gap: 22px; }
-.bar nav a { text-decoration: none; font-size: 16px; color: var(--pencil); }
-.bar nav a:hover { color: var(--pen); }
+/* верхняя плашка */
+.bar { background: var(--bar); color: #fff; border-radius: var(--radius);
+  display: flex; justify-content: space-between; align-items: center; padding: 0 28px; height: 64px; }
+.logo { font-weight: 700; font-size: 18px; text-decoration: none; letter-spacing: -.01em; }
+.bar nav a { font-weight: 600; font-size: 15px; text-decoration: none; margin-left: 28px; opacity: .85; }
+.bar nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
 
 /* главная */
-.intro { padding: 56px 0 32px; max-width: 760px; }
-.intro h1 { margin: 0; font: 700 clamp(40px, 6.4vw, 72px)/.98 "PT Sans Narrow", "PT Sans", sans-serif; letter-spacing: -.01em; }
-.intro p { margin: 18px 0 0; font: 19px/1.6 "PT Serif", Georgia, serif; color: var(--pencil); max-width: 34em; }
+.hero { margin-top: 24px; padding: 52px 56px; }
+.hero h1 { margin: 0 0 12px; font-size: clamp(32px, 5.4vw, 56px); line-height: 1.05; letter-spacing: -.035em; }
+.hero p { margin: 0 0 28px; font-size: 19px; color: var(--mute); max-width: 40em; }
+.hero .actions { display: flex; gap: 14px; flex-wrap: wrap; }
 
-/* бланк ответов */
-.blank { background: var(--paper); border: 2px solid var(--graphite); margin-bottom: 28px; }
-.blank-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
-  padding: 12px 20px; border-bottom: 2px solid var(--graphite); }
-.blank-head h2 { margin: 0; font: 700 24px/1.1 "PT Sans Narrow", "PT Sans", sans-serif; }
-.blank-head span { color: var(--pencil); font-size: 15px; }
-.rows { display: grid; grid-template-columns: 1fr 1fr; }
-.row { position: relative; display: grid; grid-template-columns: 44px 1fr auto auto; align-items: center; gap: 14px;
-  padding: 12px 20px; border-bottom: 1px solid var(--grid); }
-.rows .row:nth-child(odd) { border-right: 1px solid var(--grid); }
-.row:hover { background: #f3f6fb; }
-.row .no { width: 44px; height: 44px; display: grid; place-items: center; border: 2px solid var(--graphite);
-  font: 700 24px/1 "PT Sans Narrow", "PT Sans", sans-serif; }
-.row .name { font-weight: 700; font-size: 17px; line-height: 1.25; text-decoration: none; }
-.row .name::after { content: ""; position: absolute; inset: 0; }
-.row:hover .name { color: var(--pen); }
-.cells { display: flex; }
-.cells i { width: 22px; height: 30px; border: 1px solid #b9c2cc; margin-left: -1px; display: grid; place-items: center;
-  font: 700 18px/1 "PT Sans Narrow", "PT Sans", sans-serif; font-style: normal; color: var(--pen); }
-.cells i:empty { background: transparent; }
-.row .pdf { position: relative; z-index: 1; display: inline-block; font-size: 14px; font-weight: 700; color: #fff;
-  background: var(--graphite); text-decoration: none; padding: 6px 12px; border-radius: 3px; }
-.row .pdf:hover { background: var(--pen); }
+.section { font-size: 24px; letter-spacing: -.02em; margin: 44px 4px 16px; }
+.section span { font-size: 16px; font-weight: 400; color: var(--mute); margin-left: 10px; letter-spacing: 0; }
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.tile { position: relative; padding: 22px 24px 20px; min-height: 196px; display: flex; flex-direction: column;
+  transition: transform .15s ease, box-shadow .15s ease; }
+.tile:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(20,22,28,.05), 0 14px 34px rgba(20,22,28,.1); }
+.tile .num { font-size: 15px; font-weight: 700; color: var(--accent); }
+.tile .name { font-size: 19px; font-weight: 600; line-height: 1.25; letter-spacing: -.01em; margin-top: 6px; }
+.tile .count { font-size: 14px; color: var(--mute); margin-top: 6px; flex: 1; }
+.tile .foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; }
+.tile .open { font-size: 15px; font-weight: 600; color: var(--link); text-decoration: none; }
+.tile .open::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.tile:hover .open { text-decoration: underline; text-underline-offset: 3px; }
+.pill { position: relative; z-index: 2; display: inline-block; font-weight: 600; font-size: 13px; color: var(--ink);
+  text-decoration: none; border: 1.5px solid var(--line); border-radius: 999px; padding: 4px 12px; background: #fff; }
+.pill:hover { border-color: var(--ink); }
+
+/* кнопки */
+.btn { display: inline-block; background: var(--ink); color: #fff; text-decoration: none; font-weight: 600; font-size: 15px;
+  padding: 12px 24px; border-radius: 999px; border: 0; }
+.btn:hover { background: var(--accent); }
+.btn.ghost { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line); }
+.btn.ghost:hover { box-shadow: inset 0 0 0 1.5px var(--ink); background: #fff; }
 
 /* страница задания */
-.head { padding: 40px 0 28px; }
-.back { font-size: 16px; color: var(--pencil); }
-.back:hover { color: var(--pen); }
-.head h1 { margin: 12px 0 0; font: 700 clamp(34px, 5vw, 56px)/1 "PT Sans Narrow", "PT Sans", sans-serif; }
-.head .meta { display: flex; align-items: center; gap: 18px; margin-top: 18px; flex-wrap: wrap; }
-.count { color: var(--pencil); font-size: 16px; }
-.btn { display: inline-block; background: var(--graphite); color: #fff; text-decoration: none; font-weight: 700; font-size: 16px;
-  padding: 9px 18px; border-radius: 3px; }
-.btn:hover { background: var(--pen); }
+.page-head { margin-top: 24px; padding: 32px 40px; }
+.page-head h1 { margin: 16px 0 18px; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.1; letter-spacing: -.03em; }
+.page-head h1 span { color: var(--accent); margin-right: .3em; }
+.page-head .row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.page-head .count { color: var(--mute); font-size: 15px; margin-left: 6px; }
 
-/* тетрадный лист: клетка + красная линия полей, номера задач — на полях */
-.sheet {
-  --field: 72px;
-  position: relative; padding: calc(var(--cell) * 2) calc(var(--cell) * 2) calc(var(--cell) * 2) var(--field);
-  background-color: var(--paper);
-  background-image:
-    linear-gradient(to right, transparent calc(var(--field) - 18px), var(--margin) calc(var(--field) - 18px),
-                    var(--margin) calc(var(--field) - 16px), transparent calc(var(--field) - 16px)),
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(to right, var(--grid) 1px, transparent 1px);
-  background-size: 100% 100%, var(--cell) var(--cell), var(--cell) var(--cell);
-  box-shadow: 0 1px 0 #cfd6de;
-}
-.task { position: relative; padding-bottom: calc(var(--cell) * 2); max-width: 46em; }
-.task + .task { padding-top: 0; }
-.idx { position: absolute; left: calc(-1 * var(--field)); width: calc(var(--field) - 28px); top: 0; text-align: right;
-  font: 700 20px/32px "PT Sans Narrow", "PT Sans", sans-serif; color: var(--graphite); text-decoration: none; }
-.idx:hover { color: var(--pen); }
-.body { font: 19px/32px "PT Serif", Georgia, serif; }
-.body p { margin: 0 0 0; }
-.body p + p { margin-top: 0; }
-.body img { max-width: 100%; height: auto; vertical-align: middle; background: var(--paper); }
-.body img.fig { display: block; margin: 16px 0 0; cursor: zoom-in; padding: 4px; }
-.body svg { max-width: 100%; height: auto; background: var(--paper); }
-.body math { font-size: 1.04em; math-style: normal; font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", math; }
-.body table { border-collapse: collapse; margin: 8px 0; max-width: 100%; }
+.doc { margin-top: 18px; padding: 8px 40px; }
+.task { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+.task:last-child { border-bottom: 0; }
+.idx { font-weight: 700; font-size: 17px; color: var(--accent); text-decoration: none; padding-top: 1px; }
+.body { min-width: 0; font-size: 18px; line-height: 1.65; }
+.body p { margin: 0 0 8px; }
+.body p:last-child { margin-bottom: 0; }
+.body img { max-width: 100%; height: auto; vertical-align: middle; }
+.body img.fig { display: block; margin: 14px 0 4px; cursor: zoom-in; }
+.body svg { max-width: 100%; height: auto; }
+.body math { font-size: 1.08em; math-style: normal; font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", math; }
+.body table { border-collapse: collapse; margin: 6px 0; max-width: 100%; }
 .body td, .body th { padding: 0 12px 0 0; vertical-align: top; border: 0; }
-.body table.data { background: var(--paper); }
-.body table.data td, .body table.data th { border: 1px solid #9aa4ae; padding: 4px 12px; text-align: center;
-  font: 17px/1.4 "PT Sans", Arial, sans-serif; }
+.body table.data td, .body table.data th { border: 1px solid var(--line); padding: 6px 12px; text-align: center; font-size: 16px; }
 
-.pager { display: flex; justify-content: space-between; gap: 16px; padding: 24px 0 0; }
-.pager a { text-decoration: none; max-width: 48%; }
-.pager span { display: block; font-size: 15px; color: var(--pencil); }
-.pager b { font: 700 22px/1.15 "PT Sans Narrow", "PT Sans", sans-serif; }
-.pager a:hover b { color: var(--pen); }
-.pager .right { text-align: right; margin-left: auto; }
+.pager { display: flex; justify-content: space-between; gap: 18px; margin-top: 18px; }
+.pager a { flex: 0 1 48%; padding: 18px 24px; text-decoration: none; font-weight: 600; }
+.pager a.right { text-align: right; margin-left: auto; }
+.pager span { display: block; font-size: 13px; color: var(--mute); font-weight: 400; }
 
-footer { padding: 40px 0; font-size: 15px; color: var(--pencil); }
+footer { text-align: center; font-size: 13px; color: var(--mute); padding: 40px 0 36px; }
 
 /* увеличение рисунка */
 .zoom { position: fixed; inset: 0; z-index: 50; display: none; align-items: center; justify-content: center;
-  background: rgba(238, 241, 244, .97); cursor: zoom-out; padding: 24px; }
+  background: rgba(242, 243, 245, .97); cursor: zoom-out; padding: 24px; }
 .zoom.on { display: flex; }
-.zoom img { display: block; background: #fff; box-shadow: 0 0 0 1px #cfd6de; }
+.zoom img { display: block; background: #fff; border-radius: 8px; box-shadow: var(--shadow); }
 
-@media (max-width: 860px) {
-  .rows { grid-template-columns: 1fr; }
-  .rows .row:nth-child(odd) { border-right: 0; }
-}
-@media (max-width: 600px) {
-  .wrap { padding: 0 12px; }
-  .bar nav { display: none; }
-  .intro { padding: 32px 0 24px; }
-  .intro p { font-size: 17px; }
-  .row { grid-template-columns: 38px 1fr auto; gap: 10px; padding: 10px 14px; }
-  .row .no { width: 38px; height: 38px; font-size: 21px; }
-  .row .cells { display: none; }
-  .sheet { --field: 46px; padding-right: 12px; }
-  .idx { font-size: 18px; width: calc(var(--field) - 24px); }
-  .body { font-size: 17px; line-height: 32px; }
+@media (max-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 720px) {
+  body { font-size: 16px; }
+  .wrap { padding: 12px 12px 0; }
+  .bar { padding: 0 18px; height: 56px; }
+  .logo { font-size: 16px; }
+  .bar nav a { margin-left: 14px; font-size: 14px; }
+  .hero { padding: 32px 24px; }
+  .grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tile { padding: 18px; min-height: 176px; }
+  .tile .name { font-size: 16px; }
+  .tile .foot { flex-direction: column; align-items: flex-start; }
+  .page-head { padding: 24px; }
+  .doc { padding: 4px 20px; }
+  .task { grid-template-columns: 30px 1fr; gap: 10px; padding: 20px 0; }
+  .body { font-size: 16px; }
 }
 @media print {
-  .bar, .pager, footer, .head .meta, .back { display: none; }
-  body, .sheet { background: #fff; box-shadow: none; }
+  .bar, .pager, footer, .page-head .row { display: none; }
+  body { background: #fff; } .card { box-shadow: none; }
 }
