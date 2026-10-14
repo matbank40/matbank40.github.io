@@ -17,6 +17,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23e3000f'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../style.css?v=1a91c0ec">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Задание 9 ЕГЭ по профильной математике: задачи с прикладным содержанием", "educationalLevel": "11 класс", "inLanguage": "ru", "learningResourceType": "Problem set", "isAccessibleForFree": true, "about": "ЕГЭ по математике, профильный уровень"}</script>
+<script>window.MathJax={options:{enableMenu:false},svg:{fontCache:"global",scale:1.05},startup:{typeset:true}};</script>
+<script defer src="../mathjax/mml-svg.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -269,7 +271,7 @@
   
   <article class="task" id="tBBF131">
     <a class="idx" href="#tBBF131" title="Номер в банке ФИПИ: BBF131">47</a>
-    <div class="body"><p>Локатор батискафа, равномерно погружающегося вертикально вниз, испускает ультразвуковые импульсы частотой 185 МГц. Скорость погружения батискафа <math> <semantics> <mi>v</mi> </semantics> </math> (в м/с) вычисляется по формуле <img alt="Рисунок к заданию 9 ЕГЭ по математике" class="fig" decoding="async" height="53" loading="lazy" src="../img/c53912ab4c3f7d00.png" width="104"/>,   где <math> <semantics> <mrow> <mi>c</mi><mo>=</mo><mn>1500</mn><mtext> </mtext><mtext>м</mtext><mtext> </mtext><mo>/</mo><mtext>​</mtext><mtext>с</mtext> </mrow> </semantics> </math> <math> <semantics> <mo>—</mo> </semantics> </math> скорость звука в воде, <img alt="" class="formula" decoding="async" height="27" loading="lazy" src="../img/31febb369d775f91.png" width="23"/> <math> <semantics> <mo>—</mo> </semantics> </math> частота испускаемых импульсов (в МГц), <img alt="" class="formula" decoding="async" height="24" loading="lazy" src="../img/1a38147e782aa7db.png" width="17"/> <math> <semantics> <mo>—</mo> </semantics> </math> частота отражённого от дна сигнала (в МГц), регистрируемая приёмником. Определите частоту отражённого сигнала, если скорость погружения батискафа равна 20 м/с. Ответ дайте в МГц.</p></div>
+    <div class="body"><p>Локатор батискафа, равномерно погружающегося вертикально вниз, испускает ультразвуковые импульсы частотой 185 МГц. Скорость погружения батискафа <math> <semantics> <mi>v</mi> </semantics> </math> (в м/с) вычисляется по формуле <img alt="Рисунок к заданию 9 ЕГЭ по математике" class="fig" decoding="async" height="106" loading="lazy" src="../img/c53912ab4c3f7d00.png" width="208"/>,   где <math> <semantics> <mrow> <mi>c</mi><mo>=</mo><mn>1500</mn><mtext> </mtext><mtext>м</mtext><mtext> </mtext><mo>/</mo><mtext>​</mtext><mtext>с</mtext> </mrow> </semantics> </math> <math> <semantics> <mo>—</mo> </semantics> </math> скорость звука в воде, <img alt="" class="formula" decoding="async" height="27" loading="lazy" src="../img/31febb369d775f91.png" width="23"/> <math> <semantics> <mo>—</mo> </semantics> </math> частота испускаемых импульсов (в МГц), <img alt="" class="formula" decoding="async" height="24" loading="lazy" src="../img/1a38147e782aa7db.png" width="17"/> <math> <semantics> <mo>—</mo> </semantics> </math> частота отражённого от дна сигнала (в МГц), регистрируемая приёмником. Определите частоту отражённого сигнала, если скорость погружения батискафа равна 20 м/с. Ответ дайте в МГц.</p></div>
   </article>
   
   <article class="task" id="tC9DB3D">
@@ -306,8 +308,8 @@
   document.addEventListener("click", function (e) {
     var t = e.target;
     if (t.tagName === "IMG" && t.classList.contains("fig")) {
-      // увеличиваем до 2× одним коэффициентом по обеим осям, но не больше экрана
-      var k = Math.min(2, (innerWidth - 48) / t.naturalWidth, (innerHeight - 48) / t.naturalHeight);
+      // увеличиваем до 3× одним коэффициентом по обеим осям, но не больше экрана
+      var k = Math.min(3, (innerWidth - 48) / t.naturalWidth, (innerHeight - 48) / t.naturalHeight);
       zi.src = t.src;
       zi.style.width = t.naturalWidth * k + "px";
       zi.style.height = t.naturalHeight * k + "px";

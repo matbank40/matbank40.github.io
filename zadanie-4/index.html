@@ -17,6 +17,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23e3000f'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../style.css?v=1a91c0ec">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Задание 4 ЕГЭ по профильной математике: начала теории вероятностей", "educationalLevel": "11 класс", "inLanguage": "ru", "learningResourceType": "Problem set", "isAccessibleForFree": true, "about": "ЕГЭ по математике, профильный уровень"}</script>
+<script>window.MathJax={options:{enableMenu:false},svg:{fontCache:"global",scale:1.05},startup:{typeset:true}};</script>
+<script defer src="../mathjax/mml-svg.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -336,8 +338,8 @@
   document.addEventListener("click", function (e) {
     var t = e.target;
     if (t.tagName === "IMG" && t.classList.contains("fig")) {
-      // увеличиваем до 2× одним коэффициентом по обеим осям, но не больше экрана
-      var k = Math.min(2, (innerWidth - 48) / t.naturalWidth, (innerHeight - 48) / t.naturalHeight);
+      // увеличиваем до 3× одним коэффициентом по обеим осям, но не больше экрана
+      var k = Math.min(3, (innerWidth - 48) / t.naturalWidth, (innerHeight - 48) / t.naturalHeight);
       zi.src = t.src;
       zi.style.width = t.naturalWidth * k + "px";
       zi.style.height = t.naturalHeight * k + "px";
