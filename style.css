@@ -60,9 +60,9 @@ a:focus-visible, .row:focus-within { outline: 2px solid var(--pen); outline-offs
 .cells i { width: 22px; height: 30px; border: 1px solid #b9c2cc; margin-left: -1px; display: grid; place-items: center;
   font: 700 18px/1 "PT Sans Narrow", "PT Sans", sans-serif; font-style: normal; color: var(--pen); }
 .cells i:empty { background: transparent; }
-.row .pdf { position: relative; z-index: 1; font-size: 15px; font-weight: 700; color: var(--graphite); text-decoration: none;
-  border-bottom: 1px solid currentColor; }
-.row .pdf:hover { color: var(--pen); }
+.row .pdf { position: relative; z-index: 1; display: inline-block; font-size: 14px; font-weight: 700; color: #fff;
+  background: var(--graphite); text-decoration: none; padding: 6px 12px; border-radius: 3px; }
+.row .pdf:hover { background: var(--pen); }
 
 /* страница задания */
 .head { padding: 40px 0 28px; }
