@@ -26,7 +26,8 @@ a:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-ra
 /* верхняя плашка */
 .bar { background: var(--bar); color: #fff; border-radius: var(--radius);
   display: flex; justify-content: space-between; align-items: center; padding: 0 28px; height: 64px; }
-.logo { font-weight: 700; font-size: 18px; text-decoration: none; letter-spacing: -.01em; }
+.logo { font-weight: 700; font-size: 18px; text-decoration: none; letter-spacing: -.01em; display: flex; align-items: center; gap: 12px; }
+.logo img { width: 40px; height: 40px; border-radius: 50%; background: #fff; flex: none; }
 .bar nav a { font-weight: 600; font-size: 15px; text-decoration: none; margin-left: 28px; opacity: .85; }
 .bar nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
 
@@ -154,7 +155,8 @@ footer { text-align: center; font-size: 13px; color: var(--mute); padding: 40px 
   body { font-size: 16px; }
   .wrap { padding: 12px 12px 0; }
   .bar { padding: 0 18px; height: 56px; }
-  .logo { font-size: 16px; }
+  .logo { font-size: 16px; gap: 9px; }
+  .logo img { width: 34px; height: 34px; }
   .bar nav a { margin-left: 14px; font-size: 14px; }
   .soc { margin-left: 14px; gap: 6px; }
   .bar nav .round { width: 32px; height: 32px; font-size: 11px; }
