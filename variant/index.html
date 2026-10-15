@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="64x64" href="../brand/logo-64.png">
 <link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">
 <meta property="og:image" content="https://matbank40.github.io/brand/og.png">
-<link rel="stylesheet" href="../style.css?v=f964a107">
+<link rel="stylesheet" href="../style.css?v=002257f3">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "inLanguage": "ru"}</script>
 <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]]},options:{enableMenu:false,ignoreHtmlClass:"no-tex",processHtmlClass:"sol|tex"},svg:{fontCache:"global",scale:1.05},startup:{typeset:true}};</script>
 <script defer src="../mathjax/tex-mml-svg.js"></script>
@@ -38,14 +38,17 @@
   <div class="row">
     <button class="btn red" id="vnew" type="button">Новый вариант</button>
     <button class="btn ghost" id="vprint" type="button">Распечатать / PDF</button>
+    <label class="vans"><input type="checkbox" id="vanswers"> Ответы в конце</label>
   </div>
 </section>
+<div class="print-head">Вариант ЕГЭ 2027 · профильная математика · matbank40.github.io</div>
 <section class="card doc no-tex" id="variant" data-nums='[{"no": 1, "part": 1, "title": "\u041f\u043b\u0430\u043d\u0438\u043c\u0435\u0442\u0440\u0438\u044f"}, {"no": 2, "part": 1, "title": "\u0412\u0435\u043a\u0442\u043e\u0440\u044b"}, {"no": 3, "part": 1, "title": "\u0421\u0442\u0435\u0440\u0435\u043e\u043c\u0435\u0442\u0440\u0438\u044f"}, {"no": 4, "part": 1, "title": "\u041d\u0430\u0447\u0430\u043b\u0430 \u0442\u0435\u043e\u0440\u0438\u0438 \u0432\u0435\u0440\u043e\u044f\u0442\u043d\u043e\u0441\u0442\u0435\u0439"}, {"no": 5, "part": 1, "title": "\u0412\u0435\u0440\u043e\u044f\u0442\u043d\u043e\u0441\u0442\u0438 \u0441\u043b\u043e\u0436\u043d\u044b\u0445 \u0441\u043e\u0431\u044b\u0442\u0438\u0439"}, {"no": 7, "part": 1, "title": "\u041f\u0440\u043e\u0441\u0442\u0435\u0439\u0448\u0438\u0435 \u0443\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u044f"}, {"no": 8, "part": 1, "title": "\u0412\u044b\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u044f \u0438 \u043f\u0440\u0435\u043e\u0431\u0440\u0430\u0437\u043e\u0432\u0430\u043d\u0438\u044f"}, {"no": 9, "part": 1, "title": "\u041f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u0430\u044f \u0438 \u0435\u0451 \u043f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u0435"}, {"no": 10, "part": 1, "title": "\u0417\u0430\u0434\u0430\u0447\u0438 \u0441 \u043f\u0440\u0438\u043a\u043b\u0430\u0434\u043d\u044b\u043c \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u043d\u0438\u0435\u043c"}, {"no": 11, "part": 1, "title": "\u0422\u0435\u043a\u0441\u0442\u043e\u0432\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438"}, {"no": 12, "part": 1, "title": "\u0413\u0440\u0430\u0444\u0438\u043a\u0438 \u0444\u0443\u043d\u043a\u0446\u0438\u0439"}, {"no": 13, "part": 1, "title": "\u0424\u0438\u043d\u0430\u043d\u0441\u043e\u0432\u0430\u044f \u043c\u0430\u0442\u0435\u043c\u0430\u0442\u0438\u043a\u0430"}, {"no": 14, "part": 2, "title": "\u0423\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u044f"}, {"no": 15, "part": 2, "title": "\u0421\u0442\u0435\u0440\u0435\u043e\u043c\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0437\u0430\u0434\u0430\u0447\u0430"}, {"no": 16, "part": 2, "title": "\u041d\u0435\u0440\u0430\u0432\u0435\u043d\u0441\u0442\u0432\u0430"}, {"no": 18, "part": 2, "title": "\u041f\u043b\u0430\u043d\u0438\u043c\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0437\u0430\u0434\u0430\u0447\u0430"}, {"no": 19, "part": 2, "title": "\u0417\u0430\u0434\u0430\u0447\u0430 \u0441 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u043e\u043c"}, {"no": 20, "part": 2, "title": "\u0427\u0438\u0441\u043b\u0430 \u0438 \u0438\u0445 \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430"}]'></section>
+<section class="card doc print-answers" id="vkeys" hidden></section>
 <div class="zoom" id="zoom"><img alt=""></div>
 
 
 
-<footer>Задания — открытый банк ФИПИ, fipi.ru</footer>
+<footer>Задания — открытый банк ФИПИ, fipi.ru · <a href="#" data-tour>Как пользоваться сайтом</a></footer>
 </div>
 
 <div class="notice" id="notice" data-id="1792081910" hidden>
@@ -60,7 +63,7 @@
   </div>
 </div>
 
-<script src="../site.js?v=f964a107"></script>
+<script src="../site.js?v=002257f3"></script>
 
 </body>
 </html>
