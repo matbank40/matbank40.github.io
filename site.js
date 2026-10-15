@@ -259,7 +259,9 @@
     var info = tid ? '<div class="fb-id">Задача <b>' + tid + '</b> <button type="button" class="fb-copy">Скопировать номер</button></div>' : "";
     var main;
     if (FB.form) {
-      var u = FB.form + (FB.form.indexOf("?") < 0 ? "?" : "&") + "iframe=1&task=" + encodeURIComponent(tid) + "&page=" + encodeURIComponent(where);
+      var google = /docs\.google\.com\/forms/.test(FB.form);
+      var u = FB.form + (FB.form.indexOf("?") < 0 ? "?" : "&") +
+        (google ? "embedded=true" : "iframe=1&task=" + encodeURIComponent(tid) + "&page=" + encodeURIComponent(where));
       main = '<iframe class="fb-frame" src="' + u + '" title="Форма обратной связи"></iframe>';
     } else {
       var links = (FB.tg ? '<a class="btn red" target="_blank" rel="noopener" href="' + FB.tg + '">Написать в Телеграм</a>' : "") +
