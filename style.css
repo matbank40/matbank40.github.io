@@ -81,6 +81,14 @@ a:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-ra
 .tv-draft { background: #fff; border-radius: 12px; padding: 8px 12px 12px; width: 100%; max-width: 300px; }
 .tv-draft svg { width: 100%; height: 56px; display: block; }
 footer a { color: inherit; text-underline-offset: 3px; }
+/* ошибки и отзывы */
+.report { margin-left: auto; font: inherit; font-size: 13px; color: var(--mute); background: none; border: 0; cursor: pointer;
+  padding: 4px 2px; text-decoration: underline; text-decoration-color: #c9ccd3; text-underline-offset: 3px; }
+.report:hover { color: var(--accent); text-decoration-color: currentColor; }
+.fb-box { max-width: 520px; }
+.fb-id { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 15px; margin: 0 0 12px; }
+.fb-copy { font: inherit; font-size: 13px; font-weight: 600; border: 1.5px solid var(--line); background: #fff; border-radius: 999px; padding: 3px 11px; cursor: pointer; }
+.fb-frame { width: 100%; height: min(560px, 70vh); border: 0; border-radius: 12px; background: var(--bg); }
 @media (max-width: 520px) { .tv-tiles .tv-tile:last-child { display: none; } .tour-foot { justify-content: center; } .tour-btns { margin: 0 auto; } }
 
 @keyframes nfade { from { opacity: 0; } }
@@ -229,7 +237,7 @@ mjx-container[display="true"] { margin: .4em 0 !important; }
 @media (max-width: 520px) { .bar nav a.np { display: none; } }
 @media print {
   @page { size: A4; margin: 14mm 14mm 16mm; }
-  .notice, .draw-layer, .draw-tools, .draw-pad, .vans { display: none !important; }
+  .notice, .draw-layer, .draw-tools, .draw-pad, .vans, .report { display: none !important; }
   body { font-size: 12pt; }
   .wrap { max-width: none; padding: 0; }
   .print-head { display: block; font-size: 9pt; color: #6f7480; letter-spacing: .02em; margin: 0 0 4mm; }

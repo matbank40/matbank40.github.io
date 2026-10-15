@@ -246,6 +246,50 @@
     else if (b.dataset.cmd === "clear") { st.ops = []; redraw(st); }
   }
 
+
+  /* ---------- ошибки и отзывы ---------- */
+  var FB = {};
+  try { FB = JSON.parse((document.getElementById("feedback-cfg") || {}).textContent || "{}"); } catch (e) { FB = {}; }
+
+  function openFeedback(task) {
+    var tid = task ? task.id.replace(/^t/, "") : "";
+    var where = location.href.split("#")[0] + (tid ? "#t" + tid : "");
+    var el = document.createElement("div");
+    el.className = "notice fb";
+    var info = tid ? '<div class="fb-id">Задача <b>' + tid + '</b> <button type="button" class="fb-copy">Скопировать номер</button></div>' : "";
+    var main;
+    if (FB.form) {
+      var u = FB.form + (FB.form.indexOf("?") < 0 ? "?" : "&") + "iframe=1&task=" + encodeURIComponent(tid) + "&page=" + encodeURIComponent(where);
+      main = '<iframe class="fb-frame" src="' + u + '" title="Форма обратной связи"></iframe>';
+    } else {
+      var links = (FB.tg ? '<a class="btn red" target="_blank" rel="noopener" href="' + FB.tg + '">Написать в Телеграм</a>' : "") +
+                  (FB.vk ? '<a class="btn ghost" target="_blank" rel="noopener" href="' + FB.vk + '">Написать ВКонтакте</a>' : "");
+      main = '<p>' + (tid ? "Опишите, что не так с задачей: опечатка в условии, неверный ответ, не виден рисунок. Номер задачи укажите в сообщении." :
+             "Напишите, что не работает, чего не хватает или что понравилось — мы читаем всё.") + '</p>' +
+             '<div class="notice-actions">' + (links || '<p class="wait">Контакты скоро появятся.</p>') + '</div>';
+    }
+    el.innerHTML = '<div class="notice-box fb-box" role="dialog" aria-modal="true" aria-labelledby="fb-title">' +
+      '<button class="notice-x" type="button" aria-label="Закрыть">×</button>' +
+      '<h2 id="fb-title">' + (tid ? "Нашли ошибку?" : "Отзыв и поддержка") + '</h2>' + info + main + '</div>';
+    document.body.appendChild(el);
+    function close() { el.remove(); document.removeEventListener("keydown", onKey); }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    document.addEventListener("keydown", onKey);
+    el.addEventListener("click", function (e) {
+      if (e.target === el || e.target.closest(".notice-x")) return close();
+      var c = e.target.closest(".fb-copy");
+      if (c) {
+        var done = function () { c.textContent = "Скопировано"; };
+        if (navigator.clipboard) navigator.clipboard.writeText(tid).then(done, done); else done();
+      }
+    });
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (t.closest && t.closest("[data-feedback]")) { e.preventDefault(); openFeedback(null); return; }
+    if (t.classList && t.classList.contains("report")) { openFeedback(t.closest(".task")); }
+  });
+
   /* ---------- увеличение рисунка ---------- */
   var z = document.getElementById("zoom");
   if (z) {
@@ -277,7 +321,8 @@
       ? '<input class="ans" type="text" inputmode="decimal" autocomplete="off" placeholder="Ваш ответ" aria-label="Ответ к заданию ' + n.no + '">' +
         '<button class="pill check" type="button">Проверить</button><span class="verdict" aria-live="polite"></span>'
       : "") + '<button class="pill sol-btn" type="button" aria-expanded="false">Решение</button>' +
-      '<button class="pill draw-btn" type="button" aria-pressed="false">Черновик</button>';
+      '<button class="pill draw-btn" type="button" aria-pressed="false">Черновик</button>' +
+      '<button class="report" type="button">Нашли ошибку?</button>';
     return '<article class="task" id="t' + esc(t.id) + '" data-a="' + esc(t.a) + '">' +
       '<a class="idx" href="../zadanie-' + n.no + '/#t' + esc(t.id) + '" title="' + esc(n.title) + ' · банк ФИПИ: ' + esc(t.id) + '">' + n.no + '</a>' +
       '<div class="body">' + t.html + '<div class="tools">' + tools + '</div><div class="sol" hidden>' + (t.sol || "") + '</div></div></article>';
