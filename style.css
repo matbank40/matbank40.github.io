@@ -306,3 +306,9 @@ body.kb-open { padding-bottom: 300px; }
 }
 .chip.src:disabled.on { background: #fff; color: var(--ink); }
 .chip.src:disabled::before { content: none; }
+
+/* «Тренировка» — выделена красной кнопкой в шапке */
+.bar nav a.hot { background: var(--accent); opacity: 1; padding: 7px 14px; border-radius: 999px; }
+.bar nav a.hot:hover { text-decoration: none; background: #fff; color: var(--ink); }
+.hero .btn .new { background: #fff; color: var(--accent); }
+@media (max-width: 520px) { .bar nav a.hot { padding: 6px 11px; } }
