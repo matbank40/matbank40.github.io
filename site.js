@@ -36,6 +36,8 @@
       art: '<div class="tv-draft"><svg viewBox="0 0 240 70" aria-hidden="true"><path d="M10 45 C 40 10, 60 10, 80 40 S 120 70, 140 35 S 190 5, 230 30" fill="none" stroke="#e3000f" stroke-width="3" stroke-linecap="round"/></svg><div class="tv-row"><span class="tv-pill dark">Черновик</span><span class="tv-pill"><i class="tv-dot"></i>Маркер</span><span class="tv-pill">Ластик</span></div></div>' },
     { t: "Случайный вариант", p: "Соберите вариант из случайных задач — по одной на каждый номер. Его можно распечатать, а ответы положить в конец.",
       art: '<div class="tv-row"><span class="tv-btn">Собрать случайный вариант</span></div><div class="tv-row"><span class="tv-pill">Распечатать / PDF</span><span class="tv-check"><i></i>Ответы в конце</span></div>' },
+    { t: "Тренировка", p: "Во вкладке «Тренировка» соберите подборку: номер, источники — банк ФИПИ или сборники — и сколько задач решать.",
+      art: '<div class="tv-row"><span class="tv-pill dark">№ 9</span><span class="tv-pill">✓ Банк ФИПИ</span><span class="tv-pill">✓ Ященко 2027</span></div><div class="tv-row"><span class="tv-pill">−&nbsp;&nbsp;5&nbsp;&nbsp;+</span><span class="tv-btn">Собрать подборку</span></div>' },
     { t: "PDF и рисунки", p: "Каждый номер можно скачать в PDF для печати. Нажмите на рисунок в задаче — он увеличится.",
       art: '<div class="tv-row"><span class="tv-pill">PDF</span><span class="tv-pill">Скачать PDF</span><span class="tv-zoom">⤢</span></div>' }
   ];
@@ -94,6 +96,80 @@
 
   if (store("tour-done") === "1" || navigator.webdriver) showNotice();
   else showTour(showNotice);
+
+  /* ---------- своя клавиатура для ответа: на телефонах у системной часто нет минуса ---------- */
+  var TOUCH = !!(window.matchMedia && matchMedia("(pointer: coarse)").matches);
+  var KB = null, kbInput = null;
+  function prepAnswers(root) {
+    if (!TOUCH) return;
+    (root || document).querySelectorAll(".ans").forEach(function (i) { i.setAttribute("inputmode", "none"); });
+  }
+  prepAnswers();
+
+  function kbBuild() {
+    var keys = [["1"], ["2"], ["3"], ["back", "⌫", "fn", "Стереть"], ["4"], ["5"], ["6"], ["-", "−", "fn", "Минус"],
+      ["7"], ["8"], ["9"], [",", ",", "fn", "Запятая"], ["hide", "Скрыть", "fn"], ["0"], ["go", "Проверить", "go"]];
+    KB = document.createElement("div");
+    KB.className = "kb"; KB.setAttribute("role", "group"); KB.setAttribute("aria-label", "Клавиатура для ответа");
+    KB.innerHTML = '<div class="kb-grid">' + keys.map(function (k) {
+      return '<button type="button" tabindex="-1" data-k="' + k[0] + '"' + (k[2] ? ' class="' + k[2] + '"' : "") +
+        (k[3] ? ' aria-label="' + k[3] + '"' : "") + ">" + (k[1] || k[0]) + "</button>";
+    }).join("") + "</div>";
+    document.body.appendChild(KB);
+    // pointerdown + preventDefault: поле ответа не теряет фокус, системная клавиатура не выскакивает
+    KB.addEventListener("pointerdown", function (e) {
+      var b = e.target.closest("button"); e.preventDefault();
+      if (b) kbPress(b.getAttribute("data-k"));
+    });
+    KB.addEventListener("click", function (e) { e.preventDefault(); });
+  }
+  function kbShow(input) {
+    if (!KB) kbBuild();
+    if (kbInput && kbInput !== input) kbInput.classList.remove("kb-focus");
+    kbInput = input; input.classList.add("kb-focus");
+    KB.classList.add("on"); document.body.classList.add("kb-open");
+    setTimeout(function () {
+      var r = input.getBoundingClientRect(), free = innerHeight - KB.offsetHeight - 24;
+      if (r.bottom > free) scrollBy({ top: r.bottom - free, behavior: "smooth" });
+      else if (r.top < 70) scrollBy({ top: r.top - 90, behavior: "smooth" });
+    }, 30);
+  }
+  function kbHide() {
+    if (!KB) return;
+    KB.classList.remove("on"); document.body.classList.remove("kb-open");
+    if (kbInput) { kbInput.classList.remove("kb-focus"); kbInput.blur(); }
+    kbInput = null;
+  }
+  function kbPress(k) {
+    var i = kbInput; if (!i) return;
+    if (k === "hide") { kbHide(); return; }
+    if (k === "go") { check(i.closest(".task")); return; }
+    var v = i.value, a = i.selectionStart == null ? v.length : i.selectionStart, b = i.selectionEnd == null ? v.length : i.selectionEnd;
+    if (k === "back") {
+      if (a === b && a > 0) a -= 1;
+      v = v.slice(0, a) + v.slice(b);
+    } else {
+      v = v.slice(0, a) + k + v.slice(b); a += k.length;
+    }
+    i.value = v;
+    try { i.setSelectionRange(a, a); } catch (e) { /* старые браузеры */ }
+    var out = i.closest(".task").querySelector(".verdict");
+    if (out) { out.textContent = ""; out.className = "verdict"; }
+  }
+  if (TOUCH) {
+    document.addEventListener("focusin", function (e) {
+      if (e.target.classList && e.target.classList.contains("ans")) kbShow(e.target);
+    });
+    document.addEventListener("click", function (e) {
+      if (e.target.classList && e.target.classList.contains("ans") && (!KB || !KB.classList.contains("on"))) kbShow(e.target);
+    });
+    document.addEventListener("focusout", function () {
+      setTimeout(function () {
+        var a = document.activeElement;
+        if (!(a && a.classList && a.classList.contains("ans"))) kbHide();
+      }, 0);
+    });
+  }
 
   /* ---------- ответы ---------- */
   function decode(b64) {
@@ -310,53 +386,39 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") z.classList.remove("on"); });
   }
 
-  /* ---------- случайный вариант ---------- */
-  var box = document.getElementById("variant");
-  if (!box) return;
-  var nums = JSON.parse(box.getAttribute("data-nums"));
+  /* ---------- общее для «Варианта» и «Тренировки» ---------- */
   var cache = {};
-
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-
-  function taskHtml(n, t) {
-    var tools = (n.part === 1
-      ? '<input class="ans" type="text" inputmode="decimal" autocomplete="off" placeholder="Ваш ответ" aria-label="Ответ к заданию ' + n.no + '">' +
-        '<button class="pill check" type="button">Проверить</button><span class="verdict" aria-live="polite"></span>'
-      : "") + '<button class="pill sol-btn" type="button" aria-expanded="false">Решение</button>' +
-      '<button class="pill draw-btn" type="button" aria-pressed="false">Черновик</button>' +
-      '<button class="report" type="button">Нашли ошибку?</button>';
-    return '<article class="task" id="t' + esc(t.id) + '" data-a="' + esc(t.a) + '">' +
-      '<a class="idx" href="../zadanie-' + n.no + '/#t' + esc(t.id) + '" title="' + esc(n.title) + ' · банк ФИПИ: ' + esc(t.id) + '">' + n.no + '</a>' +
-      '<div class="body">' + t.html + '<div class="tools">' + tools + '</div><div class="sol" hidden>' + (t.sol || "") + '</div></div></article>';
-  }
-
   function load(no) {
     if (cache[no]) return Promise.resolve(cache[no]);
     return fetch("../data/" + no + ".json").then(function (r) { return r.json(); }).then(function (d) { cache[no] = d; return d; });
   }
-
-  function build() {
-    box.innerHTML = '<p class="wait" style="padding:24px 0">Собираю вариант…</p>';
-    Promise.all(nums.map(function (n) { return load(n.no); })).then(function (lists) {
-      var html = "";
-      nums.forEach(function (n, i) {
-        var list = lists[i];
-        if (!list.length) return;
-        html += taskHtml(n, list[Math.floor(Math.random() * list.length)]);
-      });
-      box.innerHTML = html;
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([box]);
-    }).catch(function () {
-      box.innerHTML = '<p class="wait" style="padding:24px 0">Не удалось загрузить задания. Обновите страницу.</p>';
-    });
+  function shuffle(a) {
+    a = a.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = a[i]; a[i] = a[j]; a[j] = x; }
+    return a;
   }
-
-  document.getElementById("vnew").addEventListener("click", build);
-  document.getElementById("vprint").addEventListener("click", function () {
-    var keys = document.getElementById("vkeys"), withAns = document.getElementById("vanswers").checked;
+  // label — что написать слева (номер ЕГЭ или порядковый), withSrc — подпись источника над условием
+  function taskHtml(n, t, label, withSrc) {
+    var tools = (n.part === 1
+      ? '<input class="ans" type="text" inputmode="' + (TOUCH ? "none" : "decimal") + '" autocomplete="off" placeholder="Ваш ответ" aria-label="Ответ к заданию ' + n.no + '">' +
+        '<button class="pill check" type="button">Проверить</button><span class="verdict" aria-live="polite"></span>'
+      : "") + '<button class="pill sol-btn" type="button" aria-expanded="false">Решение</button>' +
+      '<button class="pill draw-btn" type="button" aria-pressed="false">Черновик</button>' +
+      '<button class="report" type="button">Нашли ошибку?</button>';
+    var own = t.src && t.src !== "fipi";
+    var href = own ? "#t" + esc(t.id) : "../zadanie-" + n.no + "/#t" + esc(t.id);
+    return '<article class="task" id="t' + esc(t.id) + '" data-a="' + esc(t.a) + '" data-no="' + n.no + '">' +
+      '<a class="idx" href="' + href + '" title="' + esc(n.title) + " · " + esc(t.lab || "банк ФИПИ: " + t.id) + '">' + esc(label == null ? n.no : label) + '</a>' +
+      '<div class="body">' + (withSrc ? '<span class="srcl' + (own ? " own" : "") + '">№ ' + n.no + " · " + esc(t.lab || "Банк ФИПИ") + "</span>" : "") +
+      t.html + '<div class="tools">' + tools + '</div><div class="sol" hidden>' + (t.sol || "") + '</div></div></article>';
+  }
+  function typeset(el) { if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(function () {}); }
+  // таблица ответов в конец распечатки
+  function printWithKeys(list, keys, withAns) {
     if (withAns) {
       var rows = "";
-      box.querySelectorAll(".task").forEach(function (t) {
+      list.querySelectorAll(".task").forEach(function (t) {
         var no = t.querySelector(".idx").textContent, a = decode(t.getAttribute("data-a"));
         if (a) rows += "<tr><td>" + esc(no) + "</td><td>" + esc(a.split("|")[0]) + "</td></tr>";
       });
@@ -364,6 +426,130 @@
       keys.hidden = !rows;
     } else { keys.hidden = true; }
     window.print();
-  });
-  build();
+  }
+
+  /* ---------- случайный вариант (только банк ФИПИ) ---------- */
+  var box = document.getElementById("variant");
+  if (box) {
+    var nums = JSON.parse(box.getAttribute("data-nums"));
+    var build = function () {
+      box.innerHTML = '<p class="wait" style="padding:24px 0">Собираю вариант…</p>';
+      Promise.all(nums.map(function (n) { return load(n.no); })).then(function (lists) {
+        var html = "";
+        nums.forEach(function (n, i) {
+          var list = lists[i].filter(function (t) { return !t.src || t.src === "fipi"; });
+          if (!list.length) return;
+          html += taskHtml(n, list[Math.floor(Math.random() * list.length)]);
+        });
+        box.innerHTML = html;
+        typeset(box);
+      }).catch(function () {
+        box.innerHTML = '<p class="wait" style="padding:24px 0">Не удалось загрузить задания. Обновите страницу.</p>';
+      });
+    };
+    document.getElementById("vnew").addEventListener("click", build);
+    document.getElementById("vprint").addEventListener("click", function () {
+      printWithKeys(box, document.getElementById("vkeys"), document.getElementById("vanswers").checked);
+    });
+    build();
+  }
+
+  /* ---------- тренировка: свои подборки ---------- */
+  var tr = document.getElementById("train");
+  if (tr) {
+    var NUMS = JSON.parse(tr.getAttribute("data-nums")), SRC = JSON.parse(tr.getAttribute("data-src"));
+    var MAXN = 30;
+    var st = { no: NUMS.length ? NUMS[0].no : 0, src: SRC.map(function (s) { return s.key; }), count: 5 };
+    try {
+      var saved = JSON.parse(store("train") || "null");
+      if (saved) {
+        if (saved.no === "all" || NUMS.some(function (n) { return n.no === saved.no; })) st.no = saved.no;
+        var ok = (saved.src || []).filter(function (k) { return SRC.some(function (s) { return s.key === k; }); });
+        if (ok.length) st.src = ok;
+        if (saved.count >= 1 && saved.count <= MAXN) st.count = saved.count;
+      }
+    } catch (e) { /* без сохранённых настроек */ }
+    var $n = document.getElementById("trNums"), $s = document.getElementById("trSrc"), $c = document.getElementById("trCount"),
+      $avail = document.getElementById("trAvail"), $row = document.getElementById("trCountRow"),
+      $list = document.getElementById("trList"), $sum = document.getElementById("trSum"),
+      $all = document.getElementById("trAll"), $print = document.getElementById("trPrint");
+    var numOf = function (no) { return NUMS.find(function (n) { return n.no === no; }); };
+    var countFor = function (key) {
+      if (st.no === "all") return NUMS.filter(function (n) { return n.counts[key]; }).length;
+      var n = numOf(st.no); return n ? n.counts[key] || 0 : 0;
+    };
+    var available = function () {
+      if (st.no === "all") return NUMS.filter(function (n) { return st.src.some(function (k) { return n.counts[k]; }); }).length;
+      return st.src.reduce(function (a, k) { return a + countFor(k); }, 0);
+    };
+    var save = function () { store("train", JSON.stringify(st)); };
+    var draw = function () {
+      $n.innerHTML = '<button type="button" class="chip wide' + (st.no === "all" ? " on" : "") + '" data-no="all">Весь вариант</button>' +
+        NUMS.map(function (n) {
+          return '<button type="button" class="chip' + (st.no === n.no ? " on" : "") + '" data-no="' + n.no + '" title="' + esc(n.title) + '">' + n.no + "</button>";
+        }).join("");
+      $s.innerHTML = SRC.map(function (s) {
+        var c = countFor(s.key), on = st.src.indexOf(s.key) >= 0;
+        return '<button type="button" class="chip src' + (on ? " on" : "") + '" data-src="' + s.key + '" aria-pressed="' + on + '"' + (c ? "" : " disabled") + ">" +
+          esc(s.name) + "<i>" + c + "</i></button>";
+      }).join("");
+      var av = available();
+      $row.hidden = st.no === "all";
+      $all.disabled = st.no === "all";
+      $c.textContent = Math.min(st.count, Math.max(av, 1));
+      $avail.textContent = st.no === "all"
+        ? "по одной задаче на каждый номер"
+        : (av ? "всего подходит " + av : "нет задач — выберите другой источник") + (numOf(st.no) ? " · " + numOf(st.no).title : "");
+    };
+    var nOf = function (no) { var n = numOf(no); return { no: no, part: n.part, title: n.title }; };
+    var pick = function (list) { return list.filter(function (t) { return st.src.indexOf(t.src || "fipi") >= 0; }); };
+    var srcNames = function () { return SRC.filter(function (s) { return st.src.indexOf(s.key) >= 0; }).map(function (s) { return s.name; }).join(", "); };
+    var show = function (html, sum) {
+      $sum.innerHTML = sum; $sum.hidden = false;
+      $list.innerHTML = html || '<p class="wait" style="padding:24px 0">Под эти условия задач нет.</p>';
+      $list.hidden = false; $print.disabled = !html;
+      prepAnswers($list); typeset($list);
+      $sum.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    var run = function (all) {
+      if (!st.src.length) { $avail.textContent = "Выберите хотя бы один источник"; return; }
+      $list.hidden = false; $list.innerHTML = '<p class="wait" style="padding:24px 0">Собираю…</p>';
+      if (st.no === "all") {
+        Promise.all(NUMS.map(function (n) { return load(n.no); })).then(function (lists) {
+          var html = "", k = 0;
+          NUMS.forEach(function (n, i) {
+            var l = pick(lists[i]); if (!l.length) return;
+            html += taskHtml(nOf(n.no), l[Math.floor(Math.random() * l.length)], n.no, true); k++;
+          });
+          show(html, "<b>Вариант</b> · " + k + " " + word(k) + " · " + esc(srcNames()));
+        }).catch(fail);
+        return;
+      }
+      load(st.no).then(function (list) {
+        var l = pick(list);
+        if (!all) l = shuffle(l).slice(0, st.count);
+        var n = nOf(st.no);
+        show(l.map(function (t, i) { return taskHtml(n, t, i + 1, true); }).join(""),
+          "<b>№ " + n.no + " · " + esc(n.title) + "</b> · " + l.length + " " + word(l.length) + " · " + esc(srcNames()) + (all ? "" : " · в случайном порядке"));
+      }).catch(fail);
+    };
+    var fail = function () { $list.innerHTML = '<p class="wait" style="padding:24px 0">Не удалось загрузить задания. Обновите страницу.</p>'; };
+    var word = function (n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? "задача" : a >= 2 && a <= 4 && (b < 12 || b > 14) ? "задачи" : "задач"; };
+
+    tr.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b || b.disabled) return;
+      if (b.hasAttribute("data-no")) { var v = b.getAttribute("data-no"); st.no = v === "all" ? "all" : +v; }
+      else if (b.hasAttribute("data-src")) {
+        var k = b.getAttribute("data-src"), i = st.src.indexOf(k);
+        if (i >= 0) { if (st.src.length > 1) st.src.splice(i, 1); } else st.src.push(k);
+      } else if (b.hasAttribute("data-step")) {
+        st.count = Math.max(1, Math.min(MAXN, Math.min(+$c.textContent, available() || 1) + +b.getAttribute("data-step")));
+      } else if (b.id === "trGo") { run(false); return; }
+      else if (b.id === "trAll") { run(true); return; }
+      else if (b.id === "trPrint") { printWithKeys($list, document.getElementById("trKeys"), document.getElementById("trAnswers").checked); return; }
+      else return;
+      save(); draw();
+    });
+    draw();
+  }
 })();
