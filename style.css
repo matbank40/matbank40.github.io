@@ -312,3 +312,10 @@ body.kb-open { padding-bottom: 300px; }
 .bar nav a.hot:hover { text-decoration: none; background: #fff; color: var(--ink); }
 .hero .btn .new { background: #fff; color: var(--accent); }
 @media (max-width: 520px) { .bar nav a.hot { padding: 6px 11px; } }
+
+/* переключатель «Банк ФИПИ / Аналоги matbank» на странице номера */
+.tabs { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--bg); margin: -4px 0 18px; flex-wrap: wrap; }
+.tabs a { font-size: 15px; font-weight: 600; color: var(--ink); text-decoration: none; padding: 8px 16px; border-radius: 999px; }
+.tabs a:hover { background: #fff; }
+.tabs a.on { background: var(--ink); color: #fff; }
+.tabs i { font-style: normal; font-weight: 400; opacity: .6; margin-left: 7px; }
