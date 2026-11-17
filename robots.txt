@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /kabinet/
+Disallow: /vhod/
 
 Sitemap: https://matbank.ru/sitemap.xml

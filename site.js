@@ -3,6 +3,7 @@
   "use strict";
 
   /* ---------- объявление: показывается один раз, пока админ не выпустит новое ---------- */
+  var EXKEY = document.body.getAttribute("data-exam") === "oge" ? "oge-" : "";  // настройки ЕГЭ и ОГЭ не смешиваем
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
 
   function showNotice() {
@@ -28,7 +29,7 @@
 
   /* ---------- обучение для тех, кто зашёл впервые ---------- */
   var TOUR = [
-    { t: "Задания по номерам", p: "Все задачи открытого банка ФИПИ разложены по номерам ЕГЭ. Выберите номер на главной — откроются все его задачи.",
+    { t: "Задания по номерам", p: "Все задачи открытого банка ФИПИ разложены по номерам " + (EXKEY ? "ОГЭ" : "ЕГЭ") + ". Выберите номер на главной — откроются все его задачи.",
       art: '<div class="tv-tiles"><div class="tv-tile"><b>Задание 7</b><span>Простейшие уравнения</span><i>Открыть задания →</i></div><div class="tv-tile"><b>Задание 9</b><span>Производная</span><i>Открыть задания →</i></div></div>' },
     { t: "Проверьте свой ответ", p: "В задачах первой части впишите ответ и нажмите «Проверить». Дробь можно писать через запятую или точку.",
       art: '<div class="tv-row"><span class="tv-input">−6</span><span class="tv-pill">Проверить</span><span class="tv-ok">Верно</span></div>' },
@@ -54,7 +55,7 @@
 
     function welcome() {
       body.innerHTML = '<img class="tour-logo" src="' + (document.querySelector(".logo img") || {}).src + '" alt="">' +
-        '<h2 id="tour-title">Добро пожаловать!</h2><p>Здесь все задачи открытого банка ФИПИ по профильной математике. Показать за полминуты, как всё устроено?</p>';
+        '<h2 id="tour-title">Добро пожаловать!</h2><p>Здесь задачи открытого банка ФИПИ ' + (EXKEY ? "для ОГЭ по математике" : "по профильной математике") + '. Показать за полминуты, как всё устроено?</p>';
       dots.innerHTML = "";
       btns.innerHTML = '<button class="btn ghost" data-a="skip" type="button">Пропустить</button><button class="btn red" data-a="next" type="button">Показать</button>';
       i = -1;
@@ -195,8 +196,11 @@
     out.className = "verdict";
     if (!right) { out.textContent = "Ответы появятся позже"; out.classList.add("wait"); return; }
     if (!input.value.trim()) { out.textContent = "Введите ответ"; out.classList.add("wait"); return; }
-    if (same(input.value, right)) { out.textContent = "Верно"; out.classList.add("ok"); }
+    var good = same(input.value, right);
+    if (good) { out.textContent = "Верно"; out.classList.add("ok"); }
     else { out.textContent = "Неверно"; out.classList.add("bad"); }
+    // для статистики в личном кабинете (account.js), если пользователь вошёл
+    try { task.dispatchEvent(new CustomEvent("mb:check", { bubbles: true, detail: { ok: good, answer: input.value.trim() } })); } catch (e) {}
   }
 
   function toggleSolution(task, btn) {
@@ -407,10 +411,11 @@
       '<button class="pill draw-btn" type="button" aria-pressed="false">Черновик</button>' +
       '<button class="report" type="button">Нашли ошибку?</button>';
     var own = t.src && t.src !== "fipi";
-    var href = own ? "#t" + esc(t.id) : "../zadanie-" + n.no + "/#t" + esc(t.id);
-    return '<article class="task" id="t' + esc(t.id) + '" data-a="' + esc(t.a) + '" data-no="' + n.no + '">' +
-      '<a class="idx" href="' + href + '" title="' + esc(n.title) + " · " + esc(t.lab || "банк ФИПИ: " + t.id) + '">' + esc(label == null ? n.no : label) + '</a>' +
-      '<div class="body">' + (withSrc ? '<span class="srcl' + (own ? " own" : "") + '">№ ' + n.no + " · " + esc(t.lab || "Банк ФИПИ") + "</span>" : "") +
+    var lab = n.lab || n.no;
+    var href = own ? "#t" + esc(t.id) : "../" + (n.slug || "zadanie-" + n.no) + "/#t" + esc(t.id);
+    return '<article class="task" id="t' + esc(t.id) + '" data-a="' + esc(t.a) + '" data-no="' + n.no + '" data-src="' + esc(t.src || "fipi") + '">' +
+      '<a class="idx" href="' + href + '" title="' + esc(n.title) + " · " + esc(t.lab || "банк ФИПИ: " + t.id) + '">' + esc(label == null ? lab : label) + '</a>' +
+      '<div class="body">' + (withSrc ? '<span class="srcl' + (own ? " own" : "") + '">№ ' + lab + " · " + esc(t.lab || "Банк ФИПИ") + "</span>" : "") +
       t.html + '<div class="tools">' + tools + '</div><div class="sol" hidden>' + (t.sol || "") + '</div></div></article>';
   }
   function typeset(el) { if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(function () {}); }
@@ -438,6 +443,7 @@
         var html = "";
         nums.forEach(function (n, i) {
           var list = lists[i].filter(function (t) { return !t.src || t.src === "fipi"; });
+          if (!list.length) list = lists[i];  // банка ФИПИ к номеру нет — берём аналоги
           if (!list.length) return;
           html += taskHtml(n, list[Math.floor(Math.random() * list.length)]);
         });
@@ -461,7 +467,7 @@
     var MAXN = 30;
     var st = { no: NUMS.length ? NUMS[0].no : 0, src: SRC.map(function (s) { return s.key; }), count: 5 };
     try {
-      var saved = JSON.parse(store("train") || "null");
+      var saved = JSON.parse(store(EXKEY + "train") || "null");
       if (saved) {
         if (saved.no === "all" || NUMS.some(function (n) { return n.no === saved.no; })) st.no = saved.no;
         var ok = (saved.src || []).filter(function (k) { return SRC.some(function (s) { return s.key === k; }); });
@@ -482,11 +488,11 @@
       if (st.no === "all") return NUMS.filter(function (n) { return st.src.some(function (k) { return n.counts[k]; }); }).length;
       return st.src.reduce(function (a, k) { return a + countFor(k); }, 0);
     };
-    var save = function () { store("train", JSON.stringify(st)); };
+    var save = function () { store(EXKEY + "train", JSON.stringify(st)); };
     var draw = function () {
       $n.innerHTML = '<button type="button" class="chip wide' + (st.no === "all" ? " on" : "") + '" data-no="all">Весь вариант</button>' +
         NUMS.map(function (n) {
-          return '<button type="button" class="chip' + (st.no === n.no ? " on" : "") + '" data-no="' + n.no + '" title="' + esc(n.title) + '">' + n.no + "</button>";
+          return '<button type="button" class="chip' + (st.no === n.no ? " on" : "") + '" data-no="' + n.no + '" title="' + esc(n.title) + '">' + (n.lab || n.no) + "</button>";
         }).join("");
       $s.innerHTML = SRC.map(function (s) {
         var c = countFor(s.key), on = st.src.indexOf(s.key) >= 0;
@@ -501,7 +507,7 @@
         ? "по одной задаче на каждый номер"
         : (av ? "всего подходит " + av : "нет задач — выберите другой источник") + (numOf(st.no) ? " · " + numOf(st.no).title : "");
     };
-    var nOf = function (no) { var n = numOf(no); return { no: no, part: n.part, title: n.title }; };
+    var nOf = function (no) { var n = numOf(no); return { no: no, lab: n.lab, slug: n.slug, part: n.part, title: n.title }; };
     var pick = function (list) { return list.filter(function (t) { return st.src.indexOf(t.src || "fipi") >= 0; }); };
     var srcNames = function () { return SRC.filter(function (s) { return st.src.indexOf(s.key) >= 0; }).map(function (s) { return s.name; }).join(", "); };
     var show = function (html, sum) {
@@ -530,7 +536,7 @@
         if (!all) l = shuffle(l).slice(0, st.count);
         var n = nOf(st.no);
         show(l.map(function (t, i) { return taskHtml(n, t, i + 1, true); }).join(""),
-          "<b>№ " + n.no + " · " + esc(n.title) + "</b> · " + l.length + " " + word(l.length) + " · " + esc(srcNames()) + (all ? "" : " · в случайном порядке"));
+          "<b>№ " + (n.lab || n.no) + " · " + esc(n.title) + "</b> · " + l.length + " " + word(l.length) + " · " + esc(srcNames()) + (all ? "" : " · в случайном порядке"));
       }).catch(fail);
     };
     var fail = function () { $list.innerHTML = '<p class="wait" style="padding:24px 0">Не удалось загрузить задания. Обновите страницу.</p>'; };
@@ -551,5 +557,208 @@
       save(); draw();
     });
     draw();
+  }
+})();
+
+/* Меню-шторка, появление блоков при прокрутке, счётчики на главной */
+(function () {
+  "use strict";
+  var dr = document.getElementById("drawer"), bg = document.getElementById("drawerBg"), btn = document.getElementById("menuBtn");
+  if (dr && bg && btn) {
+    var last = null;
+    var open = function () {
+      last = document.activeElement;
+      document.documentElement.classList.add("dr-open");
+      dr.setAttribute("aria-hidden", "false"); btn.setAttribute("aria-expanded", "true");
+      setTimeout(function () { var f = dr.querySelector(".dr-x"); if (f) f.focus(); }, 60);
+    };
+    var close = function () {
+      document.documentElement.classList.remove("dr-open");
+      dr.setAttribute("aria-hidden", "true"); btn.setAttribute("aria-expanded", "false");
+      if (last && last.focus) last.focus();
+    };
+    btn.addEventListener("click", open);
+    bg.addEventListener("click", close);
+    dr.querySelector(".dr-x").addEventListener("click", close);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && document.documentElement.classList.contains("dr-open")) close(); });
+    dr.addEventListener("click", function (e) { var a = e.target.closest("a"); if (a && (a.hasAttribute("data-tour") || a.hasAttribute("data-feedback") || a.getAttribute("href").indexOf("#") >= 0)) close(); });
+    window.MBDrawer = { open: open, close: close };
+  }
+
+  // главная: строка таблицы экзаменов целиком кликабельна
+  document.querySelectorAll(".ex-row[data-href]").forEach(function (tr) {
+    tr.addEventListener("click", function (e) { if (!e.target.closest("a")) location.href = tr.getAttribute("data-href"); });
+  });
+
+  // общая главная: слева предметы, справа номера выбранного экзамена и поиск
+  var hd = document.getElementById("hbData");
+  if (hd) {
+    var EX = JSON.parse(hd.textContent), cur = null;
+    var grid = document.getElementById("hbGrid"), msg = document.getElementById("hbMsg"), q = document.getElementById("hbQ");
+    var esc2 = function (x) { return String(x).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    var word = function (n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? "задача" : a >= 2 && a <= 4 && (b < 12 || b > 14) ? "задачи" : "задач"; };
+    var byKey = function (k) { return EX.filter(function (e) { return e.key === k; })[0] || EX[0]; };
+    var pick = function () {
+      var h = location.hash.replace("#", "");
+      return EX.filter(function (e) { return e.key === h; })[0] || null;   // без выбора — главное меню
+    };
+    var render = function () {
+      var e = cur, f = (q.value || "").trim().toLowerCase();
+      document.getElementById("hbName").textContent = e.name;
+      document.getElementById("hbMeta").textContent = e.exam + " " + e.year + " · " + e.count + " заданий · " +
+        (e.fipi ? e.fipi + " " + word(e.fipi) + " ФИПИ" : e.an_only + " аналогов, банк ФИПИ скоро");
+      document.getElementById("hbAct").innerHTML =
+        '<a class="pill" href="' + e.index + '">Все номера и PDF</a><a class="pill" href="' + e.home + 'trenirovka/">Тренировка</a>' +
+        '<a class="pill" href="' + e.home + 'variant/">Случайный вариант</a>';
+      var shown = 0, html = "";
+      [[1, "Часть 1", "краткий ответ"], [2, "Часть 2", "развёрнутый ответ"]].forEach(function (pt) {
+        var list = e.nums.filter(function (n) {
+          return n.part === pt[0] && (!f || n.title.toLowerCase().indexOf(f) >= 0 || String(n.lab) === f || String(n.no) === f);
+        });
+        if (!list.length) return;
+        shown += list.length;
+        var base = shown - list.length;
+        html += '<h2 class="hb-part" style="--i:' + base + '">' + pt[1] + "<span>" + pt[2] + "</span></h2><div class=\"hb-grid\">" + list.map(function (n, ii) {
+          var soon = !n.n;
+          return (soon ? '<div class="card hb-n soon"' : '<a class="card hb-n" href="' + e.home + n.slug + '"') + ' style="--i:' + (base + ii) + '" data-no="' + n.no + '" data-n="' + n.n + '">' +
+            '<span class="hb-no">' + esc2(n.lab) + '</span><span class="hb-t">' + esc2(n.title) + "</span>" +
+            '<span class="hb-c">' + (soon ? "скоро" : n.n) + "</span>" + (soon ? "</div>" : "</a>");
+        }).join("") + "</div>";
+      });
+      grid.innerHTML = html;
+      // поиск по номеру задачи ФИПИ (шесть знаков, например 4A0B1C)
+      var idq = f.toUpperCase();
+      msg.hidden = true;
+      if (/^[0-9A-F]{6}$/.test(idq)) {
+        var hit = null;
+        EX.forEach(function (x) { Object.keys(x.ids).forEach(function (no) {
+          if (!hit && x.ids[no].some(function (id) { return id.toUpperCase() === idq; })) {
+            var n = x.nums.filter(function (m) { return String(m.no) === no; })[0];
+            hit = { x: x, n: n, id: x.ids[no].filter(function (id) { return id.toUpperCase() === idq; })[0] };
+          }
+        }); });
+        msg.hidden = false;
+        msg.innerHTML = hit ? 'Задача ' + esc2(hit.id) + ' — задание ' + esc2(hit.n.lab) + " " + hit.x.exam + ", " + esc2(hit.n.title.toLowerCase()) +
+          '. <a href="' + hit.x.home + hit.n.slug + "#t" + esc2(hit.id) + '">Открыть задачу</a>' : "Задачи " + esc2(idq) + " нет в банке.";
+        if (hit) msg.setAttribute("data-href", hit.x.home + hit.n.slug + "#t" + hit.id); else msg.removeAttribute("data-href");
+      } else if (!shown) {
+        msg.hidden = false; msg.removeAttribute("data-href");
+        msg.textContent = "По запросу «" + q.value.trim() + "» ничего не нашлось. Введите тему (например, «вероятн») или номер задачи ФИПИ из шести знаков.";
+      }
+      try { document.dispatchEvent(new CustomEvent("mb:hub", { detail: { exam: e.key } })); } catch (er) {}
+    };
+    var wel = document.getElementById("hbWelcome"), exv = document.getElementById("hbExam");
+    var set = function (e) {
+      cur = e;
+      wel.hidden = !!e; exv.hidden = !e;
+      document.querySelectorAll(".hb-it[data-exam]").forEach(function (a) {
+        var on = a.getAttribute("data-exam") === (e ? e.key : "");
+        a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+      });
+      if (e) { q.value = ""; render(); openGroupOf(e.key); }
+      var view = e ? exv : wel;
+      view.classList.remove("hb-anim"); void view.offsetWidth; view.classList.add("hb-anim");
+      clearTimeout(view._t); view._t = setTimeout(function () { view.classList.remove("hb-anim"); }, 1400);
+      moveInd();
+    };
+    // свёртывание групп ЕГЭ / ОГЭ / Ещё (запоминается)
+    var side = document.querySelector(".hb-side"), ind = side.querySelector(".hb-ind");
+    var closedG = {};
+    try { closedG = JSON.parse(localStorage.getItem("hub-closed") || "{}"); } catch (er) {}
+    var moveInd = function () {
+      var a = side.querySelector("a.hb-it.on");
+      if (!a || !a.offsetParent || a.closest(".hb-grp.closed") || getComputedStyle(ind).display === "none") { ind.style.opacity = "0"; return; }
+      var sr = side.getBoundingClientRect(), ar = a.getBoundingClientRect();
+      ind.style.transform = "translateY(" + (ar.top - sr.top) + "px)"; ind.style.height = ar.height + "px"; ind.style.opacity = "1";
+    };
+    side.querySelectorAll(".hb-grp").forEach(function (g) {
+      var key = g.getAttribute("data-g"), btn = g.querySelector(".hb-gh");
+      var apply = function (closed) {
+        g.classList.toggle("closed", closed); btn.setAttribute("aria-expanded", closed ? "false" : "true");
+      };
+      apply(!!closedG[key]);
+      btn.addEventListener("click", function () {
+        var closed = !g.classList.contains("closed");
+        apply(closed); closedG[key] = closed;
+        try { localStorage.setItem("hub-closed", JSON.stringify(closedG)); } catch (er) {}
+        var t0 = performance.now();
+        (function follow() { moveInd(); if (performance.now() - t0 < 420) requestAnimationFrame(follow); })();
+      });
+    });
+    var openGroupOf = function (key) {
+      var a = side.querySelector('a.hb-it[data-exam="' + key + '"]'), g = a && a.closest(".hb-grp");
+      if (g && g.classList.contains("closed")) g.querySelector(".hb-gh").click();
+    };
+    window.addEventListener("resize", moveInd);
+    document.querySelectorAll("[data-exam]").forEach(function (a) {
+      if (a.tagName !== "A") return;
+      a.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        var k = a.getAttribute("data-exam");
+        history.pushState(null, "", k ? "#" + k : location.pathname);
+        set(k ? byKey(k) : null);
+        window.scrollTo(0, 0);
+      });
+    });
+    window.addEventListener("popstate", function () { set(pick()); });
+    // сменяющаяся строка на главной: цифры → новость → факт…; текст «печатается»
+    var tk = document.getElementById("tick"), tdata = document.getElementById("tickData");
+    if (tk && tdata) {
+      var slides = JSON.parse(tdata.textContent), dots = document.getElementById("tickDots");
+      var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var at = 0, timer = null, typing = null, paused = false;
+      dots.innerHTML = slides.map(function (_, k) { return '<button type="button" role="tab" aria-label="' + (k + 1) + '"></button>'; }).join("");
+      var dotEls = dots.querySelectorAll("button");
+      var build = function (sl) {
+        var el = document.createElement("div");
+        el.className = "tick-slide" + (sl.kind === "stats" ? "" : " msg");
+        el.setAttribute("data-kind", sl.kind);
+        if (sl.kind === "stats") {
+          el.innerHTML = sl.items.map(function (x) { return '<div class="tick-st"><b>' + x[0] + "</b><span>" + esc2(x[1]) + "</span></div>"; }).join("");
+        } else {
+          el.innerHTML = '<span class="tick-lab">' + esc2(sl.label) + '</span><span class="tick-txt"></span>';
+        }
+        return el;
+      };
+      var show = function (k) {
+        clearTimeout(timer); clearInterval(typing);
+        at = (k + slides.length) % slides.length;
+        var old = tk.querySelector(".tick-slide.on");
+        var el = build(slides[at]);
+        tk.appendChild(el);
+        if (old) { old.classList.remove("on"); old.classList.add("out"); setTimeout(function () { old.remove(); }, 600); }
+        requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add("on"); }); });
+        dotEls.forEach(function (d, n) { d.classList.toggle("on", n === at); d.setAttribute("aria-selected", n === at ? "true" : "false"); });
+        var hold = 5200;
+        if (slides[at].kind !== "stats") {
+          var tx = el.querySelector(".tick-txt"), full = slides[at].text, c = 0;
+          if (calm) { tx.textContent = full; tx.classList.add("done"); }
+          else {
+            typing = setInterval(function () {
+              c += 1; tx.textContent = full.slice(0, c);
+              if (c >= full.length) { clearInterval(typing); tx.classList.add("done"); }
+            }, 26);
+            hold = 26 * full.length + 3600;
+          }
+        }
+        var next = function () { if (paused) { timer = setTimeout(next, 800); return; } show(at + 1); };
+        timer = setTimeout(next, hold);
+      };
+      tk.innerHTML = "";
+      dotEls.forEach(function (d, n) { d.addEventListener("click", function () { show(n); }); });
+      var hello2 = document.getElementById("hbWelcome");
+      hello2.addEventListener("pointerenter", function () { paused = true; });
+      hello2.addEventListener("pointerleave", function () { paused = false; });
+      show(0);
+    }
+    q.addEventListener("input", render);
+    document.getElementById("hbSearch").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var h = msg.getAttribute("data-href");
+      if (h) { location.href = h; return; }
+      var first = grid.querySelector("a.hb-n");
+      if (first && q.value.trim()) location.href = first.getAttribute("href");
+    });
+    set(pick());
   }
 })();

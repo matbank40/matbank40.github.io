@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Банк заданий ЕГЭ по профильной математике 2027 — все задачи ФИПИ по номерам</title>
-<meta name="description" content="Все 1079 задач открытого банка ФИПИ по профильной математике, разложенные по 20 номерам ЕГЭ 2027. Решать онлайн, собрать вариант или скачать PDF для печати.">
+<title>Банк задач ЕГЭ 2027 — задания ФИПИ по номерам</title>
+<meta name="description" content="Бесплатный банк задач ЕГЭ по профильной математике: все задания открытого банка ФИПИ по номерам, аналоги с проверкой ответа, тренировки, случайные варианты и статистика.">
+
 <link rel="canonical" href="https://matbank.ru/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Банк заданий ЕГЭ по профильной математике 2027 — все задачи ФИПИ по номерам">
-<meta property="og:description" content="Все 1079 задач открытого банка ФИПИ по профильной математике, разложенные по 20 номерам ЕГЭ 2027. Решать онлайн, собрать вариант или скачать PDF для печати.">
+<meta property="og:title" content="Банк задач ЕГЭ 2027 — задания ФИПИ по номерам">
+<meta property="og:description" content="Бесплатный банк задач ЕГЭ по профильной математике: все задания открытого банка ФИПИ по номерам, аналоги с проверкой ответа, тренировки, случайные варианты и статистика.">
 <meta property="og:url" content="https://matbank.ru/">
 <meta property="og:locale" content="ru_RU">
 
@@ -18,260 +19,115 @@
 <link rel="icon" type="image/png" sizes="64x64" href="brand/logo-64.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <meta property="og:image" content="https://matbank.ru/brand/og.png">
-<link rel="stylesheet" href="style.css?v=7c6f343f">
+<link rel="stylesheet" href="style.css?v=e5fa2080">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Банк ЕГЭ · Профиль", "url": "https://matbank.ru", "inLanguage": "ru"}</script>
-
+<script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]]},options:{enableMenu:false,ignoreHtmlClass:"no-tex",processHtmlClass:"sol|tex"},svg:{fontCache:"global",scale:1.05},startup:{typeset:true}};</script>
+<script defer src="mathjax/tex-mml-svg.js"></script>
 </head>
-<body>
+
+
+<body class="k-hub" data-exam="hub" data-root="" data-home="">
 <div class="wrap">
 <header class="bar">
-  <a class="logo" href=""><img src="brand/logo-128.png" width="40" height="40" alt=""><span class="lt">Банк задач ЕГЭ</span></a>
-  <nav><a class="np" href="#part1">Часть 1</a><a class="np" href="#part2">Часть 2</a><a class="hot" href="trenirovka/">Тренировка</a><a href="variant/">Вариант</a><span class="soc"><a class="round" href="https://vk.ru/matbank" target="_blank" rel="noopener" aria-label="Мы ВКонтакте" title="ВКонтакте">VK</a><a class="round" href="https://t.me/matbankru" target="_blank" rel="noopener" aria-label="Мы в Телеграме" title="Телеграм">TG</a></span></nav>
+  <div class="brand">
+    <a class="logo" href="./" title="Банк задач — все экзамены"><img src="brand/logo-128.png" width="40" height="40" alt=""><span class="lt">Банк задач</span></a>
+    <details class="exsw">
+      <summary aria-label="Выбрать экзамен и предмет"><span class="exs-full">Выбрать экзамен</span><span class="exs-short">Экзамены</span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="exmenu" role="menu">
+        <div class="exg"><div class="exg-h">ЕГЭ</div>
+          <a role="menuitem" href="ege-profil/">Математика · профиль</a><span class="soon-i">Математика · база<i>скоро</i></span><span class="soon-i">Русский язык<i>скоро</i></span><span class="soon-i">Физика<i>скоро</i></span><span class="soon-i">Химия<i>скоро</i></span>
+        </div>
+      </div>
+    </details>
+  </div>
+  <nav><span class="soc"><a class="round" href="https://vk.ru/matbank" target="_blank" rel="noopener" aria-label="Мы ВКонтакте" title="ВКонтакте">VK</a><a class="round" href="https://t.me/matbankru" target="_blank" rel="noopener" aria-label="Мы в Телеграме" title="Телеграм">TG</a></span>
+    <button class="mbtn" type="button" id="menuBtn" aria-label="Меню" aria-controls="drawer" aria-expanded="false"><i></i><i></i><i></i></button></nav>
 </header>
 
 
-<section class="card hero">
-  <h1>ЕГЭ по профильной математике</h1>
-  <p>Все 1079 задач открытого банка ФИПИ, разложенные по 20 номерам ЕГЭ 2027. Решайте на сайте, проверяйте ответы и скачивайте подборки в PDF.</p>
-  <div class="actions">
-    <a class="btn red" href="trenirovka/">Тренировка<span class="new">новое</span></a>
-    <a class="btn" href="variant/">Собрать случайный вариант</a>
-    <a class="btn ghost" href="#part1">Часть 1</a>
-    <a class="btn ghost" href="#part2">Часть 2</a>
-  </div>
-</section>
-
-
-<h2 class="section" id="part1">Часть 1<span>краткий ответ</span></h2>
-<div class="grid">
-  
-  <div class="card tile">
-    <div class="num">Задание 1</div>
-    <div class="name">Планиметрия</div>
-    <div class="count">58 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-1/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-01.pdf" download="01_Планиметрия.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 2</div>
-    <div class="name">Векторы</div>
-    <div class="count">31 задача</div>
-    <div class="foot">
-      <a class="open" href="zadanie-2/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-02.pdf" download="02_Векторы.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 3</div>
-    <div class="name">Стереометрия</div>
-    <div class="count">57 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-3/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-03.pdf" download="03_Стереометрия.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 4</div>
-    <div class="name">Начала теории вероятностей</div>
-    <div class="count">55 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-4/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-04.pdf" download="04_Начала_теории_вероятностей.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 5</div>
-    <div class="name">Вероятности сложных событий</div>
-    <div class="count">55 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-5/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-05.pdf" download="05_Вероятности_сложных_событий.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile soon">
-    <div class="num">Задание 6<span class="new">новое</span></div>
-    <div class="name">Случайные величины</div>
-    <div class="count">Ожидаем в ноябре 2026</div>
-    <div class="foot">
-      <a class="open" href="zadanie-6/">Подробнее →</a>
+<div class="hb">
+  <aside class="card hb-side" aria-label="Экзамены и предметы">
+    <span class="hb-ind" aria-hidden="true"></span>
+    <a class="hb-it hb-home" href="./" data-exam="">Главная</a>
+    
+    <div class="hb-grp" data-g="ЕГЭ">
+      <button class="hb-gh" type="button" aria-expanded="true"><span class="hb-gl">ЕГЭ</span><span class="hb-gr">11 класс</span><svg class="hb-ch" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 5.5 7 9l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="hb-gi"><div class="hb-gin">
       
+      <a class="hb-it" href="ege-profil/" data-exam="ege"><span><span class="hb-ex">ЕГЭ · </span>Профильная математика</span></a>
+      <span class="hb-it soon">Базовая математика<i>скоро</i></span><span class="hb-it soon">Русский язык<i>скоро</i></span><span class="hb-it soon">Физика<i>скоро</i></span><span class="hb-it soon">Химия<i>скоро</i></span>
+      </div></div>
     </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 7</div>
-    <div class="name">Простейшие уравнения</div>
-    <div class="count">54 задачи</div>
-    <div class="foot">
-      <a class="open" href="zadanie-7/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-07.pdf" download="07_Простейшие_уравнения.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 8</div>
-    <div class="name">Вычисления и преобразования</div>
-    <div class="count">60 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-8/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-08.pdf" download="08_Вычисления_и_преобразования.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 9</div>
-    <div class="name">Производная и её применение</div>
-    <div class="count">56 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-9/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-09.pdf" download="09_Производная_и_её_применение.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 10</div>
-    <div class="name">Задачи с прикладным содержанием</div>
-    <div class="count">58 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-10/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-10.pdf" download="10_Задачи_с_прикладным_содержанием.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 11</div>
-    <div class="name">Текстовые задачи</div>
-    <div class="count">62 задачи</div>
-    <div class="foot">
-      <a class="open" href="zadanie-11/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-11.pdf" download="11_Текстовые_задачи.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 12</div>
-    <div class="name">Графики функций</div>
-    <div class="count">58 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-12/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-12.pdf" download="12_Графики_функций.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 13</div>
-    <div class="name">Финансовая математика</div>
-    <div class="count">66 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-13/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-13.pdf" download="13_Финансовая_математика.pdf">PDF</a>
-    </div>
-  </div>
-  
-</div>
-
-<h2 class="section" id="part2">Часть 2<span>развёрнутый ответ</span></h2>
-<div class="grid">
-  
-  <div class="card tile">
-    <div class="num">Задание 14</div>
-    <div class="name">Уравнения</div>
-    <div class="count">67 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-14/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-14.pdf" download="14_Уравнения.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 15</div>
-    <div class="name">Стереометрическая задача</div>
-    <div class="count">66 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-15/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-15.pdf" download="15_Стереометрическая_задача.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 16</div>
-    <div class="name">Неравенства</div>
-    <div class="count">71 задача</div>
-    <div class="foot">
-      <a class="open" href="zadanie-16/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-16.pdf" download="16_Неравенства.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile soon">
-    <div class="num">Задание 17<span class="new">новое</span></div>
-    <div class="name">Математическое моделирование</div>
-    <div class="count">Ожидаем в ноябре 2026</div>
-    <div class="foot">
-      <a class="open" href="zadanie-17/">Подробнее →</a>
+    
+    <div class="hb-grp" data-g="more">
+      <button class="hb-gh" type="button" aria-expanded="true"><span class="hb-gl">Ещё</span><svg class="hb-ch" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 5.5 7 9l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="hb-gi"><div class="hb-gin">
+      <a class="hb-it" href="trenirovka/">Тренировка</a>
+      <a class="hb-it" href="variant/">Случайный вариант</a>
       
+      </div></div>
     </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 18</div>
-    <div class="name">Планиметрическая задача</div>
-    <div class="count">75 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-18/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-18.pdf" download="18_Планиметрическая_задача.pdf">PDF</a>
+  </aside>
+  <div class="hb-main">
+    <div id="hbWelcome" class="card hb-hello">
+      <img class="hb-logo" src="brand/logo-128.png" width="120" height="120" alt="">
+      <h1 class="hb-h1">matbank.ru</h1>
+      <p class="hb-txt">Тренажёр для подготовки к ЕГЭ</p>
+      <div class="tick" id="tick" aria-live="polite">
+        
+        <div class="tick-slide on" data-kind="stats"><div class="tick-st"><b>1148</b><span>задач ФИПИ</span></div><div class="tick-st"><b>1035</b><span>аналогов с ответами</span></div><div class="tick-st"><b>19</b><span>номеров ЕГЭ</span></div></div>
+      </div>
+      <div class="tick-dots" id="tickDots" role="tablist" aria-label="Новости и факты"></div>
+      <script type="application/json" id="tickData">[{"items": [[1148, "\u0437\u0430\u0434\u0430\u0447 \u0424\u0418\u041f\u0418"], [1035, "\u0430\u043d\u0430\u043b\u043e\u0433\u043e\u0432 \u0441 \u043e\u0442\u0432\u0435\u0442\u0430\u043c\u0438"], [19, "\u043d\u043e\u043c\u0435\u0440\u043e\u0432 \u0415\u0413\u042d"]], "kind": "stats"}, {"kind": "news", "label": "\u041d\u043e\u0432\u043e\u0435 \u00b7 15 \u043d\u043e\u044f\u0431\u0440\u044f", "text": "\u0414\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u044b \u0447\u0435\u0440\u0442\u0435\u0436\u0438 \u0438 \u0433\u0440\u0430\u0444\u0438\u043a\u0438 \u043a \u0430\u043d\u0430\u043b\u043e\u0433\u0430\u043c \u2116 1, 3, 8 \u0438 11 \u2014 \u043a\u0430\u043a \u0432 \u0431\u0430\u043d\u043a\u0435 \u0424\u0418\u041f\u0418"}, {"kind": "fact", "label": "\u0424\u0430\u043a\u0442", "text": "\u0412 \u0415\u0413\u042d \u043f\u043e \u043f\u0440\u043e\u0444\u0438\u043b\u044c\u043d\u043e\u0439 \u043c\u0430\u0442\u0435\u043c\u0430\u0442\u0438\u043a\u0435 19 \u0437\u0430\u0434\u0430\u043d\u0438\u0439: 12 \u0441 \u043a\u0440\u0430\u0442\u043a\u0438\u043c \u043e\u0442\u0432\u0435\u0442\u043e\u043c \u0438 7 \u0441 \u0440\u0430\u0437\u0432\u0451\u0440\u043d\u0443\u0442\u044b\u043c."}, {"kind": "news", "label": "\u041d\u043e\u0432\u043e\u0435 \u00b7 14 \u043d\u043e\u044f\u0431\u0440\u044f", "text": "\u0414\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u044b \u0430\u043d\u0430\u043b\u043e\u0433\u0438 \u043a \u2116 12 \u2014 140 \u0437\u0430\u0434\u0430\u0447 \u043d\u0430 \u043d\u0430\u0438\u0431\u043e\u043b\u044c\u0448\u0435\u0435 \u0438 \u043d\u0430\u0438\u043c\u0435\u043d\u044c\u0448\u0435\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435"}, {"kind": "fact", "label": "\u0424\u0430\u043a\u0442", "text": "\u041d\u0430 \u0415\u0413\u042d \u043f\u043e \u043f\u0440\u043e\u0444\u0438\u043b\u044c\u043d\u043e\u0439 \u043c\u0430\u0442\u0435\u043c\u0430\u0442\u0438\u043a\u0435 \u0434\u0430\u0451\u0442\u0441\u044f 3 \u0447\u0430\u0441\u0430 55 \u043c\u0438\u043d\u0443\u0442 \u2014 235 \u043c\u0438\u043d\u0443\u0442."}, {"kind": "news", "label": "\u041d\u043e\u0432\u043e\u0435 \u00b7 14 \u043d\u043e\u044f\u0431\u0440\u044f", "text": "\u0424\u043e\u0440\u043c\u0443\u043b\u044b \u0432 \u0437\u0430\u0434\u0430\u0447\u0430\u0445 \u0424\u0418\u041f\u0418 \u0431\u043e\u043b\u044c\u0448\u0435 \u043d\u0435 \u043a\u0430\u0440\u0442\u0438\u043d\u043a\u0438 \u2014 \u0447\u0438\u0442\u0430\u044e\u0442\u0441\u044f \u0442\u0430\u043a \u0436\u0435 \u0447\u0451\u0442\u043a\u043e, \u043a\u0430\u043a \u0442\u0435\u043a\u0441\u0442"}, {"kind": "fact", "label": "\u0424\u0430\u043a\u0442", "text": "\u041c\u0430\u043a\u0441\u0438\u043c\u0443\u043c \u0437\u0430 \u0415\u0413\u042d \u043f\u043e \u043f\u0440\u043e\u0444\u0438\u043b\u044c\u043d\u043e\u0439 \u043c\u0430\u0442\u0435\u043c\u0430\u0442\u0438\u043a\u0435 \u2014 32 \u043f\u0435\u0440\u0432\u0438\u0447\u043d\u044b\u0445 \u0431\u0430\u043b\u043b\u0430."}, {"kind": "news", "label": "\u041d\u043e\u0432\u043e\u0435 \u00b7 10 \u043d\u043e\u044f\u0431\u0440\u044f", "text": "\u041f\u043e\u044f\u0432\u0438\u043b\u0430\u0441\u044c \u00ab\u0422\u0440\u0435\u043d\u0438\u0440\u043e\u0432\u043a\u0430\u00bb: \u043f\u043e\u0434\u0431\u043e\u0440\u043a\u0438 \u043f\u043e \u043d\u043e\u043c\u0435\u0440\u0430\u043c \u0438 \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430\u043c"}, {"kind": "fact", "label": "\u0424\u0430\u043a\u0442", "text": "\u0417\u0430\u0434\u0430\u0447\u0438 \u044d\u043a\u0437\u0430\u043c\u0435\u043d\u0430 \u0441\u043e\u0441\u0442\u0430\u0432\u043b\u044f\u044e\u0442\u0441\u044f \u043f\u043e \u0442\u0435\u043c \u0436\u0435 \u043f\u0440\u043e\u0442\u043e\u0442\u0438\u043f\u0430\u043c, \u0447\u0442\u043e \u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u043e\u0442\u043a\u0440\u044b\u0442\u043e\u0433\u043e \u0431\u0430\u043d\u043a\u0430 \u0424\u0418\u041f\u0418."}, {"kind": "fact", "label": "\u0424\u0430\u043a\u0442", "text": "\u0410\u043d\u0430\u043b\u043e\u0433\u0438 matbank \u0438\u043c\u0435\u044e\u0442 \u043f\u043e\u0441\u0442\u043e\u044f\u043d\u043d\u044b\u0435 \u043d\u043e\u043c\u0435\u0440\u0430 \u2014 \u0443\u0447\u0438\u0442\u0435\u043b\u044c \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0434\u0430\u0442\u044c \u00ab\u0430\u043d\u0430\u043b\u043e\u0433\u0438 \u043a \u2116 8: 3, 7, 12\u00bb."}]</script>
     </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 19</div>
-    <div class="name">Задача с параметром</div>
-    <div class="count">69 задач</div>
-    <div class="foot">
-      <a class="open" href="zadanie-19/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-19.pdf" download="19_Задача_с_параметром.pdf">PDF</a>
-    </div>
-  </div>
-  
-  <div class="card tile">
-    <div class="num">Задание 20</div>
-    <div class="name">Числа и их свойства</div>
-    <div class="count">61 задача</div>
-    <div class="foot">
-      <a class="open" href="zadanie-20/">Открыть задания →</a>
-      <a class="pill" href="pdf/ege-profil-zadanie-20.pdf" download="20_Числа_и_их_свойства.pdf">PDF</a>
-    </div>
-  </div>
-  
-</div>
-
-
-
-
-<footer>Задания — открытый банк ФИПИ, fipi.ru · <a href="#" data-tour>Как пользоваться сайтом</a> · <a href="#" data-feedback>Отзыв и поддержка</a></footer>
-</div>
-
-<div class="notice" id="notice" data-id="1794325948" hidden>
-  <div class="notice-box" role="dialog" aria-modal="true" aria-labelledby="notice-title">
-    <button class="notice-x" type="button" aria-label="Закрыть">×</button>
-    <h2 id="notice-title">Новое на сайте: «Тренировка»</h2>
-    <p>Во вкладке «Тренировка» соберите подборку под себя: выберите номер, откуда брать задачи — банк ФИПИ или аналоги matbank — и сколько решать. Можно собрать и целый вариант, а при печати положить ответы в конец.</p><p>Что ещё нового:<br>— аналоги matbank: 525 новых задач к номерам 1–5, 7–11 и 13 с проверкой ответа;<br>— на телефоне своя клавиатура для ответа — с минусом и запятой.</p><p>Скоро появятся аналоги ко всем номерам, в том числе задачи с рисунками.</p>
-    <div class="notice-actions">
-      <a class="btn red notice-go" href="https://matbank.ru/trenirovka/">Открыть тренировку</a>
-      <button class="btn ghost notice-ok" type="button">Понятно</button>
+    <div id="hbExam" hidden>
+    <section class="card hb-top">
+      <div class="hb-title">
+        <h2 id="hbName">Профильная математика</h2>
+        <p id="hbMeta"></p>
+      </div>
+      <form class="hb-search" id="hbSearch" role="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="hbQ" type="search" autocomplete="off" placeholder="Номер задачи ФИПИ или тема" aria-label="Поиск по номеру задачи ФИПИ или теме">
+      </form>
+    </section>
+    <div class="hb-act" id="hbAct"></div>
+    <p class="hb-msg" id="hbMsg" hidden></p>
+    <div id="hbGrid"></div>
     </div>
   </div>
 </div>
+<script type="application/json" id="hbData">[{"an_only": 0, "count": 19, "exam": "\u0415\u0413\u042d", "fipi": 1148, "home": "", "ids": {"1": ["A33A46", "80A34C", "7FA4FB", "2933FB", "84E9F2", "FFBD0F", "B77903", "C7D60A", "3CF402", "847B0B", "8CB50E", "1DD37A", "79D7B4", "732EBF", "BC72B9", "AAB5B7", "9C6FBB", "F12D1C", "018816", "Dec61F", "5B3F1A", "CE4D1D", "6C9E2A", "4e31DD", "2AcFD0", "282EDC", "B54D55", "907C53", "3B5E5D", "78e8A7", "CA58AE", "FDDACE", "A9DCC5", "697AC9", "485B9F", "F34697", "FFE399", "CC7A9E", "0005E9", "DF24E0", "6709ee", "30B4E7", "01BE6F", "B4C261", "5B6e6D", "AD5F64", "997361", "9B7E69", "3D4E60", "D7423F", "82F839", "B3E586", "21628C", "D68789", "59978F", "eA748e", "EE7C83", "8D3587"], "2": ["40B442", "0A394E", "D891F7", "44700A", "166200", "e21e0B", "FC0F78", "579B74", "C9EE7C", "E68A17", "F6942c", "FFBFD7", "1c7454", "3FF85B", "Fc87A4", "A288A1", "ee1AA2", "D331CB", "58e4c5", "3F02c4", "E5399A", "602093", "34F395", "0432E9", "713e60", "71AC6C", "238861", "8e0D68", "4A073e", "028837", "1FeA81"], "3": ["91Be4D", "37164B", "BE03FA", "ADF4FE", "6D5AF2", "29FE0E", "Dc980A", "D5AC0C", "5C9973", "817F71", "F277BE", "0762B2", "B28DB5", "6F27B9", "F4F51D", "26B211", "68281C", "80631B", "F3Fc26", "06E32C", "135723", "2D6929", "E71725", "32AF22", "841122", "1E28D8", "2F9BDB", "E1E5D0", "41E054", "1F4550", "1D9551", "DFC057", "467AAF", "68cAA2", "48EB9B", "FcFB97", "F51D9A", "e3e194", "61D99A", "370392", "0989E5", "B1EBED", "2359E0", "DB4Ae5", "5C56EC", "cD7468", "936F6F", "E45C62", "793F38", "E5413A", "843F31", "47F68F", "B4FF85", "D8F984", "C59282", "69588c", "33B18F"], "4": ["75244F", "B5214D", "C9C646", "BFC1FE", "A203F4", "ED19F5", "05E30D", "941D07", "47447E", "56097B", "6A487C", "60F7B5", "60C5B8", "1B431B", "A2Ae19", "C9F415", "913615", "A76923", "088ADe", "7DF0D0", "A467DC", "E032D9", "F59F55", "2F945c", "530858", "379055", "D5F8A3", "A8D6AB", "8FD6A6", "0540C3", "D150cA", "95F2C4", "91DFC9", "83C4C1", "FF579A", "16D19B", "CF4294", "3D1090", "838c9D", "2A4DE5", "2eB7e3", "D459ED", "5540EE", "9cc4e6", "EDA4E7", "68B0E4", "7F0767", "EB6864", "0C303D", "DB253e", "DBCD3E", "5FB930", "BC2487", "D3C781", "C83C8C"], "5": ["E02843", "8B6F73", "8ec711", "932DDB", "8F3933", "198c47", "346547", "858F4B", "0cc4F3", "B0eAF8", "30D3F2", "AA6802", "997E04", "97B50F", "91D905", "6E7D00", "436A74", "DF1172", "226FB1", "D170BF", "27C71D", "804D11", "A6402F", "9B2D2B", "F3F0DF", "F253DE", "0ECDD4", "11CCDE", "51EADD", "8EF0DE", "0F9157", "eF645A", "66F056", "2AFDA9", "A63DC3", "6532cc", "315AcA", "73B69F", "A92B9D", "3C509C", "80A99C", "2965EA", "07D66F", "75A66F", "7FF06A", "Be7D6F", "D81165", "546A68", "553B3F", "9EB534", "EBB536", "6DBE38", "151689", "C41083", "944788"], "6": ["4CBD4E", "71A34E", "1FE24C", "91CD43", "4C69F7", "BBFFF9", "1E76F6", "586EF2", "6A95F2", "2D920F", "55eA0e", "E4F70F", "517970", "06AF1F", "eA1217", "E22911", "86811A", "FA7623", "06D921", "19E729", "B948D4", "BF9CD9", "3599D1", "370eDc", "B05656", "D28A54", "D14D52", "59D451", "3e8552", "0B15Ac", "1E16A7", "A628Ae", "971AA0", "8CEAA5", "19FBCF", "12B3C9", "2FB6C7", "5CE2C6", "C6D0C4", "8BE5C3", "De509B", "ED6C96", "37eA9D", "885E9A", "6976e6", "c7666A", "673F60", "5E753F", "EAB432", "E43E38", "3A5432", "17CF80", "2BDA84", "AEEC8B"], "7": ["2D494A", "76A1FD", "2D68F1", "110B03", "133372", "23C8BB", "9302BE", "9945B8", "3F52B8", "55491F", "330712", "AA2E29", "818625", "0444D9", "58ABD6", "7E8850", "e09A5B", "24F9AF", "5085A6", "223ec5", "DcF3c4", "4D0B96", "D0019C", "E74193", "F6A6E0", "10c0e6", "A7C3EB", "8F25eA", "F13332", "DB6A39", "424680", "F6158A", "042F86", "5A7C8F", "c1228A", "83B485", "ECE840", "9017F9", "11A20A", "0E5270", "41CD19", "75591A", "224219", "A3FD10", "4B912B", "CCEA21", "68CF2D", "0DC0A0", "91B7CF", "7AC894", "7CD29A", "5CBA9F", "A68E99", "967F93", "334A92", "C1F1E2", "95FEEB", "DC6B69", "572E60", "61C181"], "8": ["71BC43", "D13540", "F1BDF1", "A558Fe", "28FA05", "57C40E", "0ED279", "C97E7E", "95A978", "626B77", "B537B2", "BA4FBA", "D143BD", "57A7B1", "51B8B6", "56EA1A", "C0261C", "F9EA20", "0B2322", "026E2D", "966E26", "891127", "BE1DDB", "497F54", "FFE757", "099555", "B81155", "97B55A", "4849A6", "162BAA", "6796AE", "396DA0", "FEE4C3", "321FCD", "c6eA90", "49c3eA", "FFF1E1", "C380E8", "6c0Ae4", "F25161", "FC5C6D", "FFB369", "D00D6F", "D79C6E", "A2E26B", "c1936D", "984B6c", "093E32", "B65F3D", "D65930", "DDC830", "4DB285", "7F208A", "A62F87", "655F85", "875A8A"], "9": ["71114A", "Be6745", "94554A", "D888F6", "3EDEF2", "8027FE", "19DD0F", "80F70e", "222c71", "58427F", "344B7E", "FD43B9", "1803B0", "DCF8B1", "8371BD", "D6F31D", "Aecc13", "c15c1c", "00002A", "0C4928", "4A46D4", "3B0CD7", "338D5A", "BA98A1", "3D81A7", "01C5CD", "0B62CD", "2E36C3", "598ec6", "934EC9", "98B1C6", "93C8C8", "643EC4", "8476CC", "72B193", "191995", "2E169A", "55A294", "5BAD91", "622297", "369392", "3B8999", "5F73E5", "6169E1", "FE4362", "F69F66", "B01E63", "2D0967", "D80A6F", "90316e", "6B9668", "FC9B35", "BBF131", "C9DB3D", "692338", "B7688E", "58c283", "95F78A"], "10": ["6D1598", "FD5B44", "081941", "39F54E", "06B9F5", "205CF2", "5504F2", "444D03", "F23E04", "598D07", "65E80F", "68610A", "366c0F", "8B3972", "4A4AB8", "F017B1", "BCABB7", "BeeFB3", "1E4FB8", "6D55BD", "BB421B", "296B11", "A42A12", "641D12", "FAC22B", "591D2E", "A08F25", "667524", "8c7829", "02F1DB", "17A0D7", "DBc2D4", "DDFADF", "CF56D0", "6D24D0", "4BA055", "AA1851", "F2CCA3", "B533A0", "5EB1A5", "D32Ac4", "AB5ECB", "AD55CA", "2A6A94", "BC64EB", "274BE8", "ADEDE3", "33D8E1", "071261", "0B236A", "768665", "B4C164", "BAF165", "24e361", "65356D", "4ecA34", "FC0337", "720230", "29D730", "581F33", "6ABF35", "33B385"], "11": ["DA4F4F", "CA314B", "F469FF", "92c1FD", "BC2802", "68Ac00", "02A17e", "A49974", "90227A", "EC397F", "783DBA", "5F9519", "9CC815", "ECB413", "656B14", "67A21A", "3D9010", "492E2A", "6FA927", "38A32C", "08C3D9", "7D21DC", "D5DBD8", "A75DDE", "e2F2DA", "713053", "AFF75F", "6F2D5E", "30F054", "82DA5C", "D6A2A2", "ABA2A7", "91C2AD", "E18EA6", "87FAA1", "4e7ec1", "1DC3CC", "8BE0C0", "8ADFCC", "8BF7C8", "448E90", "87429D", "06DEEE", "CFEAE8", "97C4EA", "0B896F", "12736C", "5BF069", "ABB360", "6E8B6F", "31336D", "09eF38", "7C4A3A", "196238", "DDA73A", "62A335", "913A8E", "E88A8D"], "12": ["47384A", "76054F", "1BFB4B", "277247", "DF0B44", "A3D342", "659A4A", "24e5F8", "DE13F8", "5750FE", "933FFF", "6888FA", "6310FE", "35F6F7", "20970C", "BDEF76", "597474", "E0767B", "1E41B2", "27ACB1", "D1E7BE", "97AEB6", "699DB5", "33F1B8", "221C18", "5E7419", "81F510", "425124", "DF872D", "9A1329", "E9862E", "688D26", "456BD7", "B224D1", "5A70DB", "AE14D4", "01A05E", "B73557", "285552", "D99158", "714DA4", "79CEAC", "C0F5A3", "8151AA", "4A47c9", "198ec9", "ACB0C6", "6986c7", "3975C8", "B4CB9F", "2E9992", "c68B97", "EAD99A", "88E991", "BEB5E7", "B4B4EA", "1DD2e7", "1ECEE8", "2D0BeD", "3A3ce8", "F82962", "033968", "24A166", "56CF6E", "336660", "35C66B", "498736", "FF843F", "AC8783"], "13": ["FDA042", "638272", "617B18", "AD8FD9", "A6BC58", "B2FAAF", "F22045", "1CAE46", "A1A34D", "0448F1", "5e5cF2", "913eF3", "EE74FD", "6671FD", "8413F6", "54D407", "3BB500", "712A7B", "209e7e", "D1D574", "5Ae77D", "C4507A", "92FD74", "2D54B0", "2247B7", "DCD2BC", "9B4DBD", "6CEDB3", "B8F61F", "2CCC19", "53A21E", "9BA813", "E6F116", "685C13", "350814", "34BB16", "889715", "0BD320", "015B20", "1D3525", "E4EA28", "89582D", "F438D2", "24AAD1", "858BD4", "8EB2DA", "0AD550", "74C1A9", "9D14AA", "30EEA9", "0000C3", "9EB1CA", "E0B0CA", "34CAC3", "46249A", "A67297", "F98Be9", "0C47ED", "72Beec", "8A88E1", "4FF160", "78516c", "D7FC6F", "c19c6e", "4EFD3D", "716236", "51D289"], "14": ["30ED04", "149319", "F7B7A1", "E95564", "EA6B32", "03B44B", "04294C", "C84642", "6B5C41", "8EEB4F", "8A0B46", "7ee2FA", "182CF4", "9A3AF9", "6BFFF1", "416B0F", "065E0A", "727800", "B19404", "13D60B", "ED4407", "3C8708", "D7147A", "c3497c", "4679B2", "DBF6Be", "454D16", "16C715", "5F0c14", "5D991D", "33A81c", "72412D", "55B421", "eFF32e", "0E8DDE", "142CDC", "C185DD", "C300DC", "616CD3", "876DD3", "429E53", "F416AF", "0B28A5", "E8E9A7", "E8FAA5", "82F7A1", "5c14cA", "ce2ec7", "77C190", "9B8297", "8EBB9F", "0549EB", "1D76E2", "1F7CE6", "A47BE8", "69A4eD", "DE9364", "C87061", "6F3F6D", "17B23F", "A2B731", "FA228B", "BCEB84", "135c80", "637C89", "325286"], "15": ["6F97FE", "80AEFA", "1EF816", "BFE0D0", "86C459", "CFD489", "483E44", "41D348", "15664C", "553848", "A18442", "cc3F47", "9D2941", "E0F447", "696D47", "33964E", "09B4F9", "70530E", "BF9904", "DA9409", "62020B", "672605", "024079", "B43678", "160E7E", "481BB0", "BE30B7", "AA07B4", "6AB7B0", "3416BF", "3991B7", "757A1B", "C04710", "2A2B2F", "55862F", "BAB6D0", "D3D3DB", "5e53DB", "4e8757", "2BBA5D", "50E75D", "C83D51", "CB6359", "4F4FA2", "62BFA4", "6870AA", "D3ACC5", "905CCB", "4c5D98", "517890", "9ce99F", "66CF9D", "4762EB", "FFCBEB", "B0D5e7", "1FCDE0", "B40161", "259766", "005232", "000E35", "7EEB39", "B28531", "1AE932", "A08F31", "914F37", "991632", "656233", "88E530", "DA4C80", "93D58F", "80648E"], "16": ["D9AF4A", "5FCD16", "1F03D1", "1187D1", "686BE7", "67736B", "B1B74D", "62784B", "60FD4D", "3eFF42", "36614C", "D334F2", "552BFD", "F4D70D", "78cB01", "29E10A", "53A300", "CD6602", "31e106", "423D7F", "BFFA71", "D63B7C", "89F37B", "4221BE", "FE4FB7", "7A1CB0", "29A6B4", "22FEBB", "8B91B1", "B9281F", "2A731e", "D15112", "257120", "5D3B2F", "E1812B", "6FE223", "4DD4D9", "71B1D1", "8C8AD4", "F6F358", "7A0F52", "593156", "81455c", "FB11A1", "C17CAC", "A3CDCA", "DBAB97", "E8199D", "EA6D9D", "262AEA", "DFEFEE", "65F0E4", "6066EB", "45786c", "B4B56D", "DBAF65", "6D2E6D", "686E6E", "4C1D36", "0BA332", "8F933F", "FE9D85", "BA898B", "DB5D8C", "A06889", "E7FA88"], "17": ["AA7FF7", "B45F0C", "5CBC00", "2EBDBF", "D57CB9", "56C211", "3CDB1B", "5E7BDE", "A96557", "829956", "8F66A4", "2B52E7", "FAAE63", "00E23C", "4F4F44", "FcDc46", "2AE241", "C5B743", "6D7942", "80e34e", "4E19FD", "4963Fe", "41A5F8", "0BC5F1", "B58CFA", "2412FA", "6B82FF", "060A0A", "B3890A", "e6Ac01", "D9D771", "54E571", "B5D2B2", "548cBA", "AC39B7", "34E1B6", "10D010", "813416", "7C842B", "73BE23", "EA7D2B", "FC6FD7", "0112D3", "0e9DD3", "16DDDD", "EF3DDA", "D8C152", "D6A053", "5259A1", "A7A4AB", "9595A4", "8377A1", "78A6C2", "A003cB", "9c96c5", "BAD790", "92699C", "86B99A", "F2A2EB", "0e3ce7", "0063ED", "BE8FE4", "003F6E", "E80769", "36ce6e", "8e946e", "7E3432", "7EEB3E", "15EF35", "909839", "832C34", "AC2684", "E87882", "3B468E", "8C8D87"], "18": ["8D6C09", "617476", "B384BC", "E1F91F", "36F316", "8C0C15", "211B61", "3DD135", "56C747", "A22E40", "ABE248", "CF1240", "EE054F", "DA9BFE", "CDB8F3", "9F53F5", "e76FF5", "7B510F", "BB4A02", "11D603", "907104", "45927B", "44907E", "1cce7c", "D5CA79", "831474", "04FEB6", "AD93BF", "07CC1C", "37FD10", "8F4718", "4A8E2F", "093D22", "FD16D2", "F3A6D5", "0106DC", "D354DE", "9437D5", "EDB7D3", "4B165e", "5F6c59", "577658", "c06958", "93CF53", "F605A0", "752FA4", "7F7EC4", "AeA2cF", "6854C0", "8257C0", "456B95", "073F98", "DADE95", "AcF79c", "3E3293", "F7e0eA", "FF3CE9", "D5A8E6", "E156E1", "8F61E2", "421A63", "7CC260", "162563", "C7C26F", "997C65", "3D7367", "Bc0636", "e9FA32", "3D498A"], "19": ["30D64C", "F58FFD", "7B10F3", "7CA5F3", "A68DFB", "AB3CF8", "6e44FB", "8381FC", "2B4308", "AB0F0C", "F37F75", "D3C577", "920C72", "B3c1B7", "AED2BB", "A8EFB6", "B5D110", "9C9614", "E5791E", "34A218", "742D28", "D8F724", "D6152F", "A65127", "EC9829", "85FA27", "4B81D5", "40BED3", "7C3FDA", "E983D6", "6948DB", "4A9559", "6FF25e", "394D51", "D51CAD", "A87FAB", "6E32AD", "002FC3", "C009C4", "9Fe39A", "37B190", "2907eB", "5066E8", "A0A7EB", "CFEFEF", "C690EB", "c794eA", "EA76EF", "8755EE", "0FB969", "7F366B", "2A4168", "e8AA65", "724631", "12AE34", "F89087", "FB6A82", "2DC181", "D5588E", "9BC08F", "354582"]}, "index": "ege-profil/", "key": "ege", "name": "\u041f\u0440\u043e\u0444\u0438\u043b\u044c\u043d\u0430\u044f \u043c\u0430\u0442\u0435\u043c\u0430\u0442\u0438\u043a\u0430", "nums": [{"an": "zadanie-1/analogi/", "lab": "1", "n": 58, "no": 1, "own": false, "part": 1, "slug": "zadanie-1/", "title": "\u041f\u043b\u0430\u043d\u0438\u043c\u0435\u0442\u0440\u0438\u044f"}, {"an": "zadanie-2/analogi/", "lab": "2", "n": 31, "no": 2, "own": false, "part": 1, "slug": "zadanie-2/", "title": "\u0412\u0435\u043a\u0442\u043e\u0440\u044b"}, {"an": "zadanie-3/analogi/", "lab": "3", "n": 57, "no": 3, "own": false, "part": 1, "slug": "zadanie-3/", "title": "\u0421\u0442\u0435\u0440\u0435\u043e\u043c\u0435\u0442\u0440\u0438\u044f"}, {"an": "zadanie-4/analogi/", "lab": "4", "n": 55, "no": 4, "own": false, "part": 1, "slug": "zadanie-4/", "title": "\u041d\u0430\u0447\u0430\u043b\u0430 \u0442\u0435\u043e\u0440\u0438\u0438 \u0432\u0435\u0440\u043e\u044f\u0442\u043d\u043e\u0441\u0442\u0435\u0439"}, {"an": "zadanie-5/analogi/", "lab": "5", "n": 55, "no": 5, "own": false, "part": 1, "slug": "zadanie-5/", "title": "\u0412\u0435\u0440\u043e\u044f\u0442\u043d\u043e\u0441\u0442\u0438 \u0441\u043b\u043e\u0436\u043d\u044b\u0445 \u0441\u043e\u0431\u044b\u0442\u0438\u0439"}, {"an": "zadanie-6/analogi/", "lab": "6", "n": 54, "no": 6, "own": false, "part": 1, "slug": "zadanie-6/", "title": "\u041f\u0440\u043e\u0441\u0442\u0435\u0439\u0448\u0438\u0435 \u0443\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u044f"}, {"an": "zadanie-7/analogi/", "lab": "7", "n": 60, "no": 7, "own": false, "part": 1, "slug": "zadanie-7/", "title": "\u0412\u044b\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u044f \u0438 \u043f\u0440\u0435\u043e\u0431\u0440\u0430\u0437\u043e\u0432\u0430\u043d\u0438\u044f"}, {"an": "zadanie-8/analogi/", "lab": "8", "n": 56, "no": 8, "own": false, "part": 1, "slug": "zadanie-8/", "title": "\u041f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u0430\u044f \u0438 \u043f\u0435\u0440\u0432\u043e\u043e\u0431\u0440\u0430\u0437\u043d\u0430\u044f"}, {"an": "zadanie-9/analogi/", "lab": "9", "n": 58, "no": 9, "own": false, "part": 1, "slug": "zadanie-9/", "title": "\u0417\u0430\u0434\u0430\u0447\u0438 \u0441 \u043f\u0440\u0438\u043a\u043b\u0430\u0434\u043d\u044b\u043c \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u043d\u0438\u0435\u043c"}, {"an": "zadanie-10/analogi/", "lab": "10", "n": 62, "no": 10, "own": false, "part": 1, "slug": "zadanie-10/", "title": "\u0422\u0435\u043a\u0441\u0442\u043e\u0432\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438"}, {"an": "zadanie-11/analogi/", "lab": "11", "n": 58, "no": 11, "own": false, "part": 1, "slug": "zadanie-11/", "title": "\u0413\u0440\u0430\u0444\u0438\u043a\u0438 \u0444\u0443\u043d\u043a\u0446\u0438\u0439"}, {"an": "zadanie-12/analogi/", "lab": "12", "n": 69, "no": 12, "own": false, "part": 1, "slug": "zadanie-12/", "title": "\u041d\u0430\u0438\u0431\u043e\u043b\u044c\u0448\u0435\u0435 \u0438 \u043d\u0430\u0438\u043c\u0435\u043d\u044c\u0448\u0435\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438"}, {"an": "", "lab": "13", "n": 67, "no": 13, "own": false, "part": 2, "slug": "zadanie-13/", "title": "\u0423\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u044f"}, {"an": "", "lab": "14", "n": 66, "no": 14, "own": false, "part": 2, "slug": "zadanie-14/", "title": "\u0421\u0442\u0435\u0440\u0435\u043e\u043c\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0437\u0430\u0434\u0430\u0447\u0430"}, {"an": "", "lab": "15", "n": 71, "no": 15, "own": false, "part": 2, "slug": "zadanie-15/", "title": "\u041d\u0435\u0440\u0430\u0432\u0435\u043d\u0441\u0442\u0432\u0430"}, {"an": "", "lab": "16", "n": 66, "no": 16, "own": false, "part": 2, "slug": "zadanie-16/", "title": "\u0424\u0438\u043d\u0430\u043d\u0441\u043e\u0432\u0430\u044f \u043c\u0430\u0442\u0435\u043c\u0430\u0442\u0438\u043a\u0430"}, {"an": "", "lab": "17", "n": 75, "no": 17, "own": false, "part": 2, "slug": "zadanie-17/", "title": "\u041f\u043b\u0430\u043d\u0438\u043c\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0437\u0430\u0434\u0430\u0447\u0430"}, {"an": "", "lab": "18", "n": 69, "no": 18, "own": false, "part": 2, "slug": "zadanie-18/", "title": "\u0417\u0430\u0434\u0430\u0447\u0430 \u0441 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u043e\u043c"}, {"an": "", "lab": "19", "n": 61, "no": 19, "own": false, "part": 2, "slug": "zadanie-19/", "title": "\u0427\u0438\u0441\u043b\u0430 \u0438 \u0438\u0445 \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430"}], "year": 2027}]</script>
+
+
+
+<footer>
+  <div>Задания — открытый банк ФИПИ, fipi.ru · <a href="#" data-tour>Как пользоваться сайтом</a> · <a href="#" data-feedback>Отзыв и поддержка</a></div>
+  
+</footer>
+</div>
+<div class="drawer-bg" id="drawerBg"></div>
+<aside class="drawer" id="drawer" aria-label="Меню" aria-hidden="true">
+  <div class="dr-head"><a class="logo" href="./"><img src="brand/logo-128.png" width="34" height="34" alt=""><span>Банк задач</span></a><button class="dr-x" type="button" aria-label="Закрыть меню">×</button></div>
+  
+  
+  <div class="dr-sec">
+    <div class="dr-h">Экзамены и предметы</div>
+    <div class="dr-g"><span class="dr-gl">ЕГЭ</span>
+      <a href="ege-profil/">Математика · профиль</a><span class="dr-soon">Математика · база<i>скоро</i></span><span class="dr-soon">Русский язык<i>скоро</i></span><span class="dr-soon">Физика<i>скоро</i></span><span class="dr-soon">Химия<i>скоро</i></span>
+    </div>
+  </div>
+  <div class="dr-sec dr-misc">
+    <a href="#" data-tour>Как пользоваться сайтом</a><a href="#" data-feedback>Отзыв и поддержка</a>
+    <a href="https://vk.ru/matbank" target="_blank" rel="noopener">Мы ВКонтакте</a><a href="https://t.me/matbankru" target="_blank" rel="noopener">Канал в Телеграме</a>
+  </div>
+  
+</aside>
 
 <script type="application/json" id="feedback-cfg">{"form": "https://docs.google.com/forms/d/e/1FAIpQLSfk8qkyZtyb1VnC-lulrfS0cYvLjJ6jmQoBvs1UGTUdvaqzrA/viewform?usp=publish-editor", "tg": "https://t.me/matbankru", "vk": "https://vk.me/matbank"}</script>
-<script src="site.js?v=7c6f343f"></script>
+<script src="site.js?v=e5fa2080"></script>
+
+
 
 </body>
 </html>
