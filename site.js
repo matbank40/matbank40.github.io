@@ -467,8 +467,7 @@
       var own = srcOf(t) !== "fipi";
       return '<div class="vbar"><span class="vlab"><b>№ ' + esc(n.lab || n.no) + "</b> " + esc(n.title) + ' · <span class="' + (own ? "own" : "") + '">' + esc(own ? (t.lab || "Аналоги matbank") : "Банк ФИПИ · " + t.id) + "</span></span>" +
         '<span class="vbtns"><button type="button" class="pill" data-vrep="' + n.no + '">Другая задача</button>' +
-        '<button type="button" class="pill" data-vpick="' + n.no + '" aria-expanded="false">Выбрать самому</button></span></div>' +
-        '<div class="vpick" id="vp' + n.no + '" hidden></div>';
+        '<button type="button" class="pill" data-vpick="' + n.no + '" aria-haspopup="dialog">Выбрать самому</button></span></div>';
     };
     var render = function () {
       var html = "";
@@ -492,30 +491,59 @@
       try { history.replaceState(null, "", link()); } catch (e) {}
     };
     var fresh = function () { nums.forEach(function (n) { var l = pool(n.no); if (l.length) vs.pick[n.no] = rnd(l).id; }); render(); };
-    // окно выбора задачи: все задачи номера, по 15 штук
+    // окно выбора задачи: отдельный слой поверх страницы, фон размыт — список не смешивается с вариантом
+    var dlg = null, dlgNo = 0, dlgObs = null, lastBtn = null;
+    var closePick = function () {
+      if (!dlg || dlg.hidden) return;
+      dlg.classList.remove("open");
+      document.documentElement.classList.remove("vd-lock");
+      if (dlgObs) { dlgObs.disconnect(); dlgObs = null; }
+      setTimeout(function () { dlg.hidden = true; dlg.querySelector(".vd-list").innerHTML = ""; }, 220);
+      if (lastBtn) { try { lastBtn.focus({ preventScroll: true }); } catch (e) {} }
+    };
     var openPick = function (no, btn) {
-      var el = document.getElementById("vp" + no); if (!el) return;
-      if (!el.hidden) { el.hidden = true; btn.setAttribute("aria-expanded", "false"); return; }
-      var l = pool(no), shown = 0, cur = vs.pick[no];
+      var n = nums.filter(function (x) { return x.no === no; })[0]; if (!n) return;
+      if (!dlg) {
+        dlg = document.createElement("div");
+        dlg.className = "vd"; dlg.hidden = true;
+        dlg.innerHTML = '<div class="vd-bg" data-vclose></div><div class="vd-box" role="dialog" aria-modal="true" aria-labelledby="vdTitle">' +
+          '<div class="vd-head"><div><div class="vd-t" id="vdTitle"></div><div class="vd-s"></div></div><button type="button" class="vd-x" data-vclose aria-label="Закрыть">×</button></div>' +
+          '<div class="vd-list"></div></div>';
+        document.body.appendChild(dlg);
+        dlg.addEventListener("click", function (e) { if (e.target.closest("[data-vclose]")) closePick(); });
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape" && dlg && !dlg.hidden) closePick(); });
+      }
+      lastBtn = btn; dlgNo = no;
+      var l = pool(no), shown = 0, cur = vs.pick[no], list = dlg.querySelector(".vd-list");
+      dlg.querySelector(".vd-t").textContent = "№ " + (n.lab || n.no) + " · " + n.title;
+      dlg.querySelector(".vd-s").textContent = l.length + " " + (l.length % 10 === 1 && l.length % 100 !== 11 ? "задача" : (l.length % 10 >= 2 && l.length % 10 <= 4 && (l.length % 100 < 12 || l.length % 100 > 14)) ? "задачи" : "задач") + " — выберите подходящую";
+      list.innerHTML = ""; list.scrollTop = 0;
+      var sentinel = document.createElement("div"); sentinel.className = "vd-end";
       var more = function () {
-        var part = l.slice(shown, shown + 15), h = "";
-        part.forEach(function (t, i) {
-          var own = srcOf(t) !== "fipi";
-          h += '<div class="vc' + (t.id === cur ? " cur" : "") + '"><div class="vc-top"><span class="srcl' + (own ? " own" : "") + '">' + (shown + i + 1) + " · " + esc(own ? (t.lab || "Аналоги matbank") : "Банк ФИПИ · " + t.id) + "</span>" +
-            (t.id === cur ? '<span class="vc-cur">в варианте</span>' : '<button type="button" class="pill vc-take" data-take="' + esc(t.id) + '" data-no="' + no + '">Взять в вариант</button>') +
+        var part = l.slice(shown, shown + 12), frag = document.createElement("div");
+        frag.innerHTML = part.map(function (t, i) {
+          var own = srcOf(t) !== "fipi", on = t.id === cur;
+          return '<div class="vc' + (on ? " cur" : "") + '"><div class="vc-top"><span class="srcl' + (own ? " own" : "") + '">' + (shown + i + 1) + " · " + esc(own ? (t.lab || "Аналоги matbank") : "Банк ФИПИ · " + t.id) + "</span>" +
+            (on ? '<span class="vc-cur">В варианте</span>' : '<button type="button" class="pill vc-take" data-take="' + esc(t.id) + '" data-no="' + no + '">Взять в вариант</button>') +
             '</div><div class="vc-body">' + t.html + "</div></div>";
-        });
+        }).join("");
+        var nodes = [].slice.call(frag.children);
+        nodes.forEach(function (x) { list.insertBefore(x, sentinel.parentNode === list ? sentinel : null); });
+        if (sentinel.parentNode !== list) list.appendChild(sentinel);
         shown += part.length;
-        var mb = el.querySelector(".vc-more"); if (mb) mb.remove();
-        var wrap = document.createElement("div"); wrap.innerHTML = h;
-        while (wrap.firstChild) el.appendChild(wrap.firstChild);
-        if (shown < l.length) el.insertAdjacentHTML("beforeend", '<button type="button" class="btn ghost vc-more">Показать ещё (' + (l.length - shown) + ")</button>");
-        typeset(el);
+        nodes.forEach(function (x) { typeset(x); });
+        if (shown >= l.length && dlgObs) { dlgObs.disconnect(); dlgObs = null; sentinel.remove(); }
       };
-      el.innerHTML = '<div class="vc-head">Все задачи № ' + no + " — " + l.length + " шт. Нажмите «Взять в вариант» у подходящей.</div>";
-      el.hidden = false; btn.setAttribute("aria-expanded", "true");
+      dlg.hidden = false;
+      document.documentElement.classList.add("vd-lock");
+      requestAnimationFrame(function () { dlg.classList.add("open"); });
       more();
-      el._more = more;
+      // подгрузка следующих задач при прокрутке — без кнопки «Показать ещё»
+      if ("IntersectionObserver" in window && shown < l.length) {
+        dlgObs = new IntersectionObserver(function (en) { if (en[0].isIntersecting) more(); }, { root: list, rootMargin: "600px" });
+        dlgObs.observe(sentinel);
+      } else while (shown < l.length) more();
+      try { dlg.querySelector(".vd-x").focus({ preventScroll: true }); } catch (e) {}
     };
     var share = function () {
       var url = link(), done = function (m) { $code.innerHTML = "Код варианта: <b>" + vcode() + "</b> · " + m; };
@@ -533,9 +561,15 @@
         var no = +b.getAttribute("data-vrep"); vs.pick[no] = rnd(pool(no), vs.pick[no]).id; renderSlot(no);
       } else if (b.hasAttribute("data-vpick")) openPick(+b.getAttribute("data-vpick"), b);
       else if (b.hasAttribute("data-take")) {
-        var n2 = +b.getAttribute("data-no"); vs.pick[n2] = b.getAttribute("data-take"); renderSlot(n2);
-        var sl = box.querySelector('[data-slot="' + n2 + '"]'); if (sl) sl.scrollIntoView({ block: "start", behavior: "smooth" });
-      } else if (b.classList.contains("vc-more")) { var p = b.closest(".vpick"); if (p && p._more) p._more(); }
+        var n2 = +b.getAttribute("data-no"); vs.pick[n2] = b.getAttribute("data-take");
+        closePick(); renderSlot(n2);
+        var sl = box.querySelector('[data-slot="' + n2 + '"]');
+        if (sl) {
+          sl.scrollIntoView({ block: "start", behavior: "smooth" });
+          sl.classList.remove("flash"); void sl.offsetWidth; sl.classList.add("flash");
+          lastBtn = sl.querySelector("[data-vpick]");
+        }
+      }
     });
     document.getElementById("vnew").addEventListener("click", fresh);
     document.getElementById("vshare").addEventListener("click", share);
