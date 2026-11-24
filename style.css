@@ -872,19 +872,23 @@ html { scroll-behavior: smooth; }
 .vro .btn { flex: none; }
 .vlock .vsrc-row, .vlock #vnew, .vlock .vans, .vlock .vbtns { display: none !important; }
 
-/* ---------- скачивание PDF: задачи рисуются вне экрана в светлом оформлении ---------- */
-.pdfw { position: fixed; left: -12000px; top: 0; width: 720px; background: #fff; color: #000; font-size: 17px; line-height: 1.5;
+/* ---------- скачивание PDF: задачи рисуются вне экрана в светлом оформлении, компактно (~3 листа) ---------- */
+.pdfw { position: fixed; left: -12000px; top: 0; width: 860px; background: #fff; color: #000; font-size: 17px; line-height: 1.42;
   --ink: #000; --ink2: #222; --mute: #555; --card: #fff; --bg: #fff; --soft: #f2f3f5; --line: #ddd; --fig-filter: none; color-scheme: light; }
-.pdfw > div { background: #fff; padding: 10px 6px; }
+.pdfw > div { background: #fff; padding: 7px 4px; }
 .pdfw img { filter: none !important; mix-blend-mode: normal !important; }
-.pdf-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1.5px solid #000; padding-bottom: 8px !important; }
-.pdf-h b { font-size: 20px; }
-.pdf-h span { font-size: 13px; color: #555; }
-.pdf-t { display: grid; grid-template-columns: 36px 1fr; gap: 6px; border-bottom: 1px solid #e5e5e5; }
+.pdf-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1.5px solid #000; padding-bottom: 6px !important; }
+.pdf-h b { font-size: 21px; }
+.pdf-h span { font-size: 14px; color: #555; }
+.pdf-t { display: grid; grid-template-columns: 30px 1fr; gap: 4px; border-bottom: 1px solid #e8e8e8; }
 .pdf-n { font-weight: 700; color: #e3000f; }
-.pdf-b .qa { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start; }
-.pdf-b .qa.wide { grid-template-columns: 1fr; }
-.pdf-b img.fig { max-width: 100%; height: auto; }
-.pdf-b p { margin: 0 0 6px; }
-.pdf-k table { border-collapse: collapse; margin-top: 8px; }
-.pdf-k td { border: 1px solid #bbb; padding: 4px 14px; font-size: 15px; }
+.pdf-b .qa { display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: start; }
+.pdf-b .qa.wide { grid-template-columns: 1fr auto; }
+.pdf-b .qf { line-height: 0; }
+.pdf-b img.fig { width: auto !important; height: auto !important; max-width: 230px; max-height: 150px; }
+.pdf-b .qa.wide img.fig { max-width: 300px; max-height: 150px; }
+.pdf-b img.fig:not(.qf img) { display: block; margin: 4px 0; }
+.pdf-b p { margin: 0 0 4px; }
+.pdf-b .sol, .pdf-b .tools { display: none; }
+.pdf-k table { border-collapse: collapse; margin-top: 6px; }
+.pdf-k td { border: 1px solid #bbb; padding: 3px 12px; font-size: 15px; }

@@ -628,11 +628,11 @@
         var parts = [].slice.call(wrap.children), shots = [];
         return parts.reduce(function (p, el) {
           return p.then(function () {
-            return htmlToImage.toJpeg(el, { pixelRatio: 2.2, quality: 0.92, backgroundColor: "#ffffff", cacheBust: false }).then(function (u) { shots.push([u, el.offsetWidth, el.offsetHeight]); });
+            return htmlToImage.toJpeg(el, { pixelRatio: 2.4, quality: 0.9, backgroundColor: "#ffffff", cacheBust: false }).then(function (u) { shots.push([u, el.offsetWidth, el.offsetHeight]); });
           });
         }, Promise.resolve()).then(function () { return shots; });
       }).then(function (shots) {
-        var PDF = PDFLib, W = 595.28, H = 841.89, M = 42, CW = W - 2 * M;
+        var PDF = PDFLib, W = 595.28, H = 841.89, M = 34, CW = W - 2 * M;
         return PDF.PDFDocument.create().then(function (doc) {
           var page = doc.addPage([W, H]), y = H - M;
           return shots.reduce(function (p, s) {
@@ -641,7 +641,7 @@
                 var k = CW / s[1], h = s[2] * k;
                 if (y - h < M && y < H - M - 1) { page = doc.addPage([W, H]); y = H - M; }
                 page.drawImage(img, { x: M, y: y - h, width: CW, height: h });
-                y -= h + 10;
+                y -= h + 4;
               });
             });
           }, Promise.resolve()).then(function () {
