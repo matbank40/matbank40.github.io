@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f2f3f5">
+<script>(function(){var t;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="dark"&&t!=="light")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m&&t==="dark")m.setAttribute("content","#0e1013")})();</script>
 <title>Задание 3 ЕГЭ по профильной математике: стереометрия — все 57 задач банка ФИПИ</title>
 <meta name="description" content="Все 57 задач открытого банка ФИПИ к заданию 3 ЕГЭ по профильной математике (стереометрия). Решать онлайн и скачать PDF.">
 
@@ -19,7 +21,7 @@
 <link rel="icon" type="image/png" sizes="64x64" href="../brand/logo-64.png">
 <link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">
 <meta property="og:image" content="https://matbank.ru/brand/og.png">
-<link rel="stylesheet" href="../style.css?v=3214400a">
+<link rel="stylesheet" href="../style.css?v=ea89797f">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Задание 3 ЕГЭ по профильной математике: стереометрия", "educationalLevel": "11 класс", "inLanguage": "ru", "learningResourceType": "Problem set", "isAccessibleForFree": true, "about": "ЕГЭ по профильной математике"}</script>
 <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]]},options:{enableMenu:false,ignoreHtmlClass:"no-tex",processHtmlClass:"sol|tex"},svg:{fontCache:"global",scale:1.05},startup:{typeset:true}};</script>
 <script defer src="../mathjax/tex-mml-svg.js"></script>
@@ -41,6 +43,7 @@
     </details>
   </div>
   <nav><a class="np" href="../#part1">Часть 1</a><a class="np" href="../#part2">Часть 2</a><a class="hot" href="../trenirovka/">Тренировка</a><a class="nv" href="../variant/">Вариант</a><a class="nsr" href="../poisk/" aria-label="Поиск задач" title="Поиск задач"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span>Поиск</span></a><span class="soc"><a class="round" href="https://vk.ru/matbank" target="_blank" rel="noopener" aria-label="Мы ВКонтакте" title="ВКонтакте">VK</a><a class="round" href="https://t.me/matbankru" target="_blank" rel="noopener" aria-label="Мы в Телеграме" title="Телеграм">TG</a></span>
+    <button class="thm" type="button" aria-label="Тёмная тема" title="Тёмная тема"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="currentColor"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg></button>
     <button class="mbtn" type="button" id="menuBtn" aria-label="Меню" aria-controls="drawer" aria-expanded="false"><i></i><i></i><i></i></button></nav>
 </header>
 
@@ -828,6 +831,7 @@
     <a href="../">Все номера</a><a href="../#part1">Часть 1 · краткий ответ</a><a href="../#part2">Часть 2 · развёрнутый ответ</a>
     <a href="../trenirovka/">Тренировка</a><a href="../variant/">Вариант</a><a href="../poisk/">Поиск задач</a>
   </div>
+  <div class="dr-sec"><button class="dr-thm" type="button" data-thm>Тёмная тема<i data-thm-state>выкл</i></button></div>
   <div class="dr-sec">
     <div class="dr-h">Экзамены и предметы</div>
     <div class="dr-g"><span class="dr-gl">ЕГЭ</span>
@@ -841,11 +845,11 @@
   
 </aside>
 
-<div class="notice" id="notice" data-id="1795535838" hidden>
+<div class="notice" id="notice" data-id="1795536548" hidden>
   <div class="notice-box" role="dialog" aria-modal="true" aria-labelledby="notice-title">
     <button class="notice-x" type="button" aria-label="Закрыть">×</button>
-    <h2 id="notice-title">Новое на сайте: свой вариант и поиск задач</h2>
-    <p>Вариант теперь можно собрать самому: выберите, откуда брать задачи — из банка ФИПИ, из аналогов или из обоих, замените любую задачу или подберите её вручную. У каждого варианта есть код и ссылка: отправьте её классу, и все будут решать одни и те же задачи. Вариант можно скачать в PDF с ответами.</p><p>Поиск задач: введите слова или числа из условия — например, «велосипедист 3», — и сайт найдёт такие задачи в банке ФИПИ и в аналогах. Строка поиска — на главной и в шапке сайта.</p><p>И ещё: задачи-аналоги теперь есть ко всем номерам первой части — 1035 задач с проверкой ответа.</p>
+    <h2 id="notice-title">Новое на сайте: свой вариант, поиск задач и тёмная тема</h2>
+    <p>Вариант теперь можно собрать самому: выберите, откуда брать задачи — из банка ФИПИ, из аналогов или из обоих, замените любую задачу или подберите её вручную. У каждого варианта есть код и ссылка: отправьте её классу, и все будут решать одни и те же задачи. Вариант можно скачать в PDF с ответами.</p><p>Поиск задач: введите слова или числа из условия — например, «велосипедист 3», — и сайт найдёт такие задачи в банке ФИПИ и в аналогах. Строка поиска — на главной и в шапке сайта.</p><p>Тёмная тема: нажмите на значок луны в шапке сайта (на телефоне — в меню). Рисунки и формулы тоже становятся тёмными, а печать остаётся обычной.</p><p>И ещё: задачи-аналоги теперь есть ко всем номерам первой части — 1035 задач с проверкой ответа.</p>
     <div class="notice-actions">
       <a class="btn red notice-go" href="https://matbank.ru/variant/">Собрать вариант</a>
       <button class="btn ghost notice-ok" type="button">Понятно</button>
@@ -854,7 +858,7 @@
 </div>
 
 <script type="application/json" id="feedback-cfg">{"form": "https://docs.google.com/forms/d/e/1FAIpQLSfk8qkyZtyb1VnC-lulrfS0cYvLjJ6jmQoBvs1UGTUdvaqzrA/viewform?usp=publish-editor", "tg": "https://t.me/matbankru", "vk": "https://vk.me/matbank"}</script>
-<script src="../site.js?v=3214400a"></script>
+<script src="../site.js?v=ea89797f"></script>
 
 
 

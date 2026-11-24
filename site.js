@@ -948,3 +948,29 @@
     set(pick());
   }
 })();
+
+/* Тёмная тема: переключатель в шапке и в меню; выбор запоминается */
+(function () {
+  var root = document.documentElement;
+  var sync = function () {
+    var dark = root.getAttribute("data-theme") === "dark";
+    document.querySelectorAll(".thm").forEach(function (b) { b.setAttribute("aria-pressed", dark); b.title = dark ? "Светлая тема" : "Тёмная тема"; b.setAttribute("aria-label", b.title); });
+    document.querySelectorAll("[data-thm-state]").forEach(function (i) { i.textContent = dark ? "вкл" : "выкл"; });
+    var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", dark ? "#0e1013" : "#f2f3f5");
+  };
+  var set = function (t) {
+    root.classList.add("thm-anim"); root.setAttribute("data-theme", t);
+    try { localStorage.setItem("theme", t); } catch (e) {}
+    sync(); setTimeout(function () { root.classList.remove("thm-anim"); }, 400);
+  };
+  document.addEventListener("click", function (e) {
+    if (e.target.closest(".thm, [data-thm]")) set(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+  });
+  // пока пользователь сам не выбрал — следуем за системой
+  if (window.matchMedia) {
+    var mq = matchMedia("(prefers-color-scheme: dark)"), own = function () { try { return localStorage.getItem("theme"); } catch (e) { return null; } };
+    var on = function () { if (!own()) { root.setAttribute("data-theme", mq.matches ? "dark" : "light"); sync(); } };
+    if (mq.addEventListener) mq.addEventListener("change", on);
+  }
+  sync();
+})();
