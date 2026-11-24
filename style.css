@@ -816,3 +816,9 @@ html.thm-anim, html.thm-anim *, html.thm-anim *::before, html.thm-anim *::after 
 @media (prefers-reduced-motion: reduce) { html.thm-anim * { transition: none !important; } }
 html[data-theme="dark"] .body img, html[data-theme="dark"] .vc-body img { mix-blend-mode: lighten; }
 @media (max-width: 440px) { .bar nav .thm { display: none; } }
+/* объявление списком: «— Название — пояснение» */
+.notice-list { list-style: none; margin: 4px 0 0; padding: 0; }
+.notice-list li { padding: 11px 0; border-top: 1px solid var(--line); }
+.notice-list li:first-child { border-top: 0; padding-top: 4px; }
+.notice-list b { display: block; font-size: 16px; font-weight: 600; color: var(--ink); }
+.notice-list span { display: block; font-size: 14.5px; line-height: 1.45; color: var(--mute); margin-top: 2px; }
