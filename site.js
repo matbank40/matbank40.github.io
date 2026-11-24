@@ -481,6 +481,7 @@
       $code.innerHTML = "Код варианта: <b>" + c + "</b>";
       document.getElementById("vcodePrint").textContent = c;
       try { history.replaceState(null, "", link()); } catch (e) {}
+      remember();
     };
     var renderSlot = function (no) {
       var n = nums.filter(function (x) { return x.no === no; })[0], t = byId(no, vs.pick[no]), el = box.querySelector('[data-slot="' + no + '"]');
@@ -489,7 +490,24 @@
       typeset(el);
       var c = vcode(); $code.innerHTML = "Код варианта: <b>" + c + "</b>"; document.getElementById("vcodePrint").textContent = c;
       try { history.replaceState(null, "", link()); } catch (e) {}
+      remember();
     };
+    // кто собрал вариант: коды своих вариантов храним в этом браузере; чужую ссылку изменить нельзя
+    var idsStr = function () { return nums.map(function (n) { return vs.pick[n.no] || ""; }).join("."); };
+    var owned = function () { try { return JSON.parse(store(EXKEY + "vown") || "[]"); } catch (e) { return []; } };
+    var remember = function () {
+      if (vs.locked) return;
+      var l = owned(), k = idsStr(); if (l.indexOf(k) >= 0) return;
+      l.push(k); store(EXKEY + "vown", JSON.stringify(l.slice(-60)));
+    };
+    var lock = function (on) {
+      vs.locked = on;
+      document.getElementById("vform").classList.toggle("vlock", on);
+      box.classList.toggle("vlock", on);
+      document.getElementById("vro").hidden = !on;
+      if (on) document.getElementById("vanswers").checked = false;
+    };
+    document.getElementById("vown").addEventListener("click", function () { lock(false); fresh(); window.scrollTo({ top: 0, behavior: "smooth" }); });
     var fresh = function () { nums.forEach(function (n) { var l = pool(n.no); if (l.length) vs.pick[n.no] = rnd(l).id; }); render(); };
     // окно выбора задачи: отдельный слой поверх страницы, фон размыт — список не смешивается с вариантом
     var dlg = null, dlgNo = 0, dlgObs = null, lastBtn = null;
@@ -553,6 +571,7 @@
     };
     document.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
+      if (vs.locked && (b.hasAttribute("data-vsrc") || b.hasAttribute("data-vrep") || b.hasAttribute("data-vpick") || b.hasAttribute("data-take"))) return;
       if (b.hasAttribute("data-vsrc")) {
         var k = b.getAttribute("data-vsrc"), i = vs.src.indexOf(k);
         if (i >= 0) { if (vs.src.length > 1) vs.src.splice(i, 1); } else vs.src.push(k);
@@ -571,8 +590,74 @@
         }
       }
     });
-    document.getElementById("vnew").addEventListener("click", fresh);
+    document.getElementById("vnew").addEventListener("click", function () { if (!vs.locked) fresh(); });
     document.getElementById("vshare").addEventListener("click", share);
+    // скачать вариант готовым PDF-файлом: каждая задача — картинкой, задачи не разрываются между страницами
+    var loadScript = function (src) {
+      return new Promise(function (ok, fail) { var sc = document.createElement("script"); sc.src = src; sc.onload = ok; sc.onerror = fail; document.head.appendChild(sc); });
+    };
+    var ROOT = document.body.getAttribute("data-root") || "../";
+    var downloading = false;
+    var download = function () {
+      if (downloading) return; downloading = true;
+      var btn = document.getElementById("vdl"), label = btn.textContent, c = vcode();
+      btn.disabled = true; btn.textContent = "Готовлю PDF…";
+      var done = function (msg) { btn.disabled = false; btn.textContent = label; downloading = false; if (msg) $code.innerHTML = "Код варианта: <b>" + c + "</b> · " + msg; };
+      var need = [];
+      if (!window.htmlToImage) need.push(loadScript(ROOT + "vendor/html-to-image.js"));
+      if (!window.PDFLib) need.push(loadScript(ROOT + "vendor/pdf-lib.min.js"));
+      var withAns = document.getElementById("vanswers").checked && !vs.locked;
+      var wrap = document.createElement("div"); wrap.className = "pdfw";
+      var head = document.querySelector(".print-head"), title = (head ? head.textContent : "").replace(/\s+/g, " ").trim();
+      var blocks = ['<div class="pdf-h"><b>Вариант ' + esc(c) + "</b><span>" + esc(title.replace(/^Вариант\s+\S+\s*·\s*/, "")) + "</span></div>"];
+      var keys = [];
+      nums.forEach(function (n) {
+        var t = byId(n.no, vs.pick[n.no]); if (!t) return;
+        blocks.push('<div class="pdf-t"><div class="pdf-n">' + esc(n.lab || n.no) + '</div><div class="pdf-b">' + t.html + "</div></div>");
+        var a = decode(t.a || ""); if (a) keys.push([n.lab || n.no, a.split("|")[0]]);
+      });
+      if (withAns && keys.length) blocks.push('<div class="pdf-k"><b>Ответы</b><table>' + keys.map(function (k) { return "<tr><td>" + esc(k[0]) + "</td><td>" + esc(k[1]) + "</td></tr>"; }).join("") + "</table></div>");
+      wrap.innerHTML = blocks.join("");
+      document.body.appendChild(wrap);
+      Promise.all(need).then(function () {
+        return window.MathJax && MathJax.typesetPromise ? MathJax.typesetPromise([wrap]).catch(function () {}) : null;
+      }).then(function () {
+        var imgs = [].slice.call(wrap.querySelectorAll("img"));
+        return Promise.all(imgs.map(function (im) { im.loading = "eager"; return im.complete ? 0 : new Promise(function (r) { im.onload = im.onerror = r; }); }));
+      }).then(function () {
+        var parts = [].slice.call(wrap.children), shots = [];
+        return parts.reduce(function (p, el) {
+          return p.then(function () {
+            return htmlToImage.toJpeg(el, { pixelRatio: 2.2, quality: 0.92, backgroundColor: "#ffffff", cacheBust: false }).then(function (u) { shots.push([u, el.offsetWidth, el.offsetHeight]); });
+          });
+        }, Promise.resolve()).then(function () { return shots; });
+      }).then(function (shots) {
+        var PDF = PDFLib, W = 595.28, H = 841.89, M = 42, CW = W - 2 * M;
+        return PDF.PDFDocument.create().then(function (doc) {
+          var page = doc.addPage([W, H]), y = H - M;
+          return shots.reduce(function (p, s) {
+            return p.then(function () {
+              return doc.embedJpg(s[0]).then(function (img) {
+                var k = CW / s[1], h = s[2] * k;
+                if (y - h < M && y < H - M - 1) { page = doc.addPage([W, H]); y = H - M; }
+                page.drawImage(img, { x: M, y: y - h, width: CW, height: h });
+                y -= h + 10;
+              });
+            });
+          }, Promise.resolve()).then(function () {
+            doc.setTitle("Вариант " + c + " — matbank.ru"); doc.setCreator("matbank.ru");
+            return doc.save();
+          });
+        });
+      }).then(function (bytes) {
+        var url = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
+        var a = document.createElement("a"); a.href = url; a.download = "matbank-variant-" + c + ".pdf";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+        wrap.remove(); done("PDF скачан");
+      }).catch(function () { wrap.remove(); done("не получилось — попробуйте «Распечатать» → «Сохранить как PDF»"); });
+    };
+    document.getElementById("vdl").addEventListener("click", download);
     document.getElementById("vprint").addEventListener("click", function () {
       printWithKeys(box, document.getElementById("vkeys"), document.getElementById("vanswers").checked);
     });
@@ -586,7 +671,7 @@
         nums.forEach(function (n, i) { if (ids[i] && byId(n.no, ids[i])) { vs.pick[n.no] = ids[i]; ok = true; } });
         nums.forEach(function (n) { if (!vs.pick[n.no] && pool(n.no).length) vs.pick[n.no] = rnd(pool(n.no)).id; });
       }
-      if (ok) render(); else fresh();
+      if (ok) { lock(owned().indexOf(idsStr()) < 0); render(); } else fresh();
     }).catch(function () {
       box.innerHTML = '<p class="wait" style="padding:24px 0">Не удалось загрузить задания. Обновите страницу.</p>';
     });
