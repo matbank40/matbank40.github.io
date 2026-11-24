@@ -613,7 +613,7 @@
       var keys = [];
       nums.forEach(function (n) {
         var t = byId(n.no, vs.pick[n.no]); if (!t) return;
-        blocks.push('<div class="pdf-t"><div class="pdf-n">' + esc(n.lab || n.no) + '</div><div class="pdf-b">' + t.html + "</div></div>");
+        blocks.push('<div class="pdf-t' + ([2, 8, 11].indexOf(+n.no) >= 0 ? " g" : "") + '"><div class="pdf-n">' + esc(n.lab || n.no) + '</div><div class="pdf-b">' + t.html + "</div></div>");
         var a = decode(t.a || ""); if (a) keys.push([n.lab || n.no, a.split("|")[0]]);
       });
       if (withAns && keys.length) blocks.push('<div class="pdf-k"><b>Ответы</b><table>' + keys.map(function (k) { return "<tr><td>" + esc(k[0]) + "</td><td>" + esc(k[1]) + "</td></tr>"; }).join("") + "</table></div>");

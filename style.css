@@ -885,8 +885,11 @@ html { scroll-behavior: smooth; }
 .pdf-b .qa { display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: start; }
 .pdf-b .qa.wide { grid-template-columns: 1fr auto; }
 .pdf-b .qf { line-height: 0; }
-.pdf-b img.fig { width: auto !important; height: auto !important; max-width: 230px; max-height: 150px; }
-.pdf-b .qa.wide img.fig { max-width: 300px; max-height: 150px; }
+.pdf-b img.fig { width: auto !important; height: auto !important; max-width: 250px; max-height: 170px; }
+.pdf-b .qa.wide img.fig { max-width: 320px; max-height: 170px; }
+/* графики и клетчатые рисунки (№ 2, 8, 11): по ним считают клетки — крупнее */
+.pdf-t.g img.fig { max-width: 340px; max-height: 260px; }
+.pdf-t.g .qa.wide img.fig { max-width: 470px; max-height: 260px; }
 .pdf-b img.fig:not(.qf img) { display: block; margin: 4px 0; }
 .pdf-b p { margin: 0 0 4px; }
 .pdf-b .sol, .pdf-b .tools { display: none; }
