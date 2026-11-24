@@ -895,3 +895,4 @@ html { scroll-behavior: smooth; }
 .pdf-b .sol, .pdf-b .tools { display: none; }
 .pdf-k table { border-collapse: collapse; margin-top: 6px; }
 .pdf-k td { border: 1px solid #bbb; padding: 3px 12px; font-size: 15px; }
+footer .brandline { margin-bottom: 6px; color: var(--ink2); } footer .brandline b { color: var(--ink); }
