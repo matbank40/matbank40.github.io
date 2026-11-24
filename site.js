@@ -433,31 +433,217 @@
     window.print();
   }
 
-  /* ---------- случайный вариант (только банк ФИПИ) ---------- */
+  /* ---------- вариант: источник задач, замена и ручной выбор, ссылка ---------- */
   var box = document.getElementById("variant");
   if (box) {
     var nums = JSON.parse(box.getAttribute("data-nums"));
-    var build = function () {
-      box.innerHTML = '<p class="wait" style="padding:24px 0">Собираю вариант…</p>';
-      Promise.all(nums.map(function (n) { return load(n.no); })).then(function (lists) {
-        var html = "";
-        nums.forEach(function (n, i) {
-          var list = lists[i].filter(function (t) { return !t.src || t.src === "fipi"; });
-          if (!list.length) list = lists[i];  // банка ФИПИ к номеру нет — берём аналоги
-          if (!list.length) return;
-          html += taskHtml(n, list[Math.floor(Math.random() * list.length)]);
-        });
-        box.innerHTML = html;
-        typeset(box);
-      }).catch(function () {
-        box.innerHTML = '<p class="wait" style="padding:24px 0">Не удалось загрузить задания. Обновите страницу.</p>';
-      });
+    var VSRC = JSON.parse(document.getElementById("vform").getAttribute("data-src"));
+    var vs = { src: VSRC.map(function (x) { return x.key; }), pick: {} };   // pick: номер → id выбранной задачи
+    try { var sv = JSON.parse(store(EXKEY + "vsrc") || "null"); if (sv && sv.length) vs.src = sv.filter(function (k) { return VSRC.some(function (x) { return x.key === k; }); }); } catch (e) {}
+    if (!vs.src.length) vs.src = ["fipi"];
+    var lists = {};
+    var $vsrc = document.getElementById("vSrc"), $code = document.getElementById("vcode");
+    var srcOf = function (t) { return t.src || "fipi"; };
+    // кандидаты номера с учётом выбранных источников; если по источнику задач нет (часть 2 без аналогов) — берём все
+    var pool = function (no) {
+      var l = lists[no] || [], f = l.filter(function (t) { return vs.src.indexOf(srcOf(t)) >= 0; });
+      return f.length ? f : l;
     };
-    document.getElementById("vnew").addEventListener("click", build);
+    var byId = function (no, id) { return (lists[no] || []).filter(function (t) { return t.id === id; })[0]; };
+    var rnd = function (l, not) { var c = l.filter(function (t) { return t.id !== not; }); if (!c.length) c = l; return c[Math.floor(Math.random() * c.length)]; };
+    // короткий код варианта — по списку задач: одинаковые задачи → одинаковый код
+    var vcode = function () {
+      var str = nums.map(function (n) { return vs.pick[n.no] || ""; }).join("."), h = 2166136261;
+      for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+      return h.toString(36).toUpperCase().slice(0, 6);
+    };
+    var link = function () { return location.href.split("#")[0] + "#v=" + nums.map(function (n) { return vs.pick[n.no] || ""; }).join("."); };
+    var drawSrc = function () {
+      $vsrc.innerHTML = VSRC.map(function (x) {
+        return '<button type="button" class="chip src' + (vs.src.indexOf(x.key) >= 0 ? " on" : "") + '" data-vsrc="' + esc(x.key) + '" aria-pressed="' + (vs.src.indexOf(x.key) >= 0) + '">' + esc(x.name) + "</button>";
+      }).join("");
+    };
+    var vbar = function (n, t) {
+      var own = srcOf(t) !== "fipi";
+      return '<div class="vbar"><span class="vlab"><b>№ ' + esc(n.lab || n.no) + "</b> " + esc(n.title) + ' · <span class="' + (own ? "own" : "") + '">' + esc(own ? (t.lab || "Аналоги matbank") : "Банк ФИПИ · " + t.id) + "</span></span>" +
+        '<span class="vbtns"><button type="button" class="pill" data-vrep="' + n.no + '">Другая задача</button>' +
+        '<button type="button" class="pill" data-vpick="' + n.no + '" aria-expanded="false">Выбрать самому</button></span></div>' +
+        '<div class="vpick" id="vp' + n.no + '" hidden></div>';
+    };
+    var render = function () {
+      var html = "";
+      nums.forEach(function (n) {
+        var t = byId(n.no, vs.pick[n.no]); if (!t) return;
+        html += '<div class="vslot" data-slot="' + n.no + '">' + vbar(n, t) + taskHtml(n, t) + "</div>";
+      });
+      box.innerHTML = html || '<p class="wait" style="padding:24px 0">Нет заданий.</p>';
+      typeset(box);
+      var c = vcode();
+      $code.innerHTML = "Код варианта: <b>" + c + "</b>";
+      document.getElementById("vcodePrint").textContent = c;
+      try { history.replaceState(null, "", link()); } catch (e) {}
+    };
+    var renderSlot = function (no) {
+      var n = nums.filter(function (x) { return x.no === no; })[0], t = byId(no, vs.pick[no]), el = box.querySelector('[data-slot="' + no + '"]');
+      if (!n || !t || !el) return render();
+      el.innerHTML = vbar(n, t) + taskHtml(n, t);
+      typeset(el);
+      var c = vcode(); $code.innerHTML = "Код варианта: <b>" + c + "</b>"; document.getElementById("vcodePrint").textContent = c;
+      try { history.replaceState(null, "", link()); } catch (e) {}
+    };
+    var fresh = function () { nums.forEach(function (n) { var l = pool(n.no); if (l.length) vs.pick[n.no] = rnd(l).id; }); render(); };
+    // окно выбора задачи: все задачи номера, по 15 штук
+    var openPick = function (no, btn) {
+      var el = document.getElementById("vp" + no); if (!el) return;
+      if (!el.hidden) { el.hidden = true; btn.setAttribute("aria-expanded", "false"); return; }
+      var l = pool(no), shown = 0, cur = vs.pick[no];
+      var more = function () {
+        var part = l.slice(shown, shown + 15), h = "";
+        part.forEach(function (t, i) {
+          var own = srcOf(t) !== "fipi";
+          h += '<div class="vc' + (t.id === cur ? " cur" : "") + '"><div class="vc-top"><span class="srcl' + (own ? " own" : "") + '">' + (shown + i + 1) + " · " + esc(own ? (t.lab || "Аналоги matbank") : "Банк ФИПИ · " + t.id) + "</span>" +
+            (t.id === cur ? '<span class="vc-cur">в варианте</span>' : '<button type="button" class="pill vc-take" data-take="' + esc(t.id) + '" data-no="' + no + '">Взять в вариант</button>') +
+            '</div><div class="vc-body">' + t.html + "</div></div>";
+        });
+        shown += part.length;
+        var mb = el.querySelector(".vc-more"); if (mb) mb.remove();
+        var wrap = document.createElement("div"); wrap.innerHTML = h;
+        while (wrap.firstChild) el.appendChild(wrap.firstChild);
+        if (shown < l.length) el.insertAdjacentHTML("beforeend", '<button type="button" class="btn ghost vc-more">Показать ещё (' + (l.length - shown) + ")</button>");
+        typeset(el);
+      };
+      el.innerHTML = '<div class="vc-head">Все задачи № ' + no + " — " + l.length + " шт. Нажмите «Взять в вариант» у подходящей.</div>";
+      el.hidden = false; btn.setAttribute("aria-expanded", "true");
+      more();
+      el._more = more;
+    };
+    var share = function () {
+      var url = link(), done = function (m) { $code.innerHTML = "Код варианта: <b>" + vcode() + "</b> · " + m; };
+      if (navigator.share && TOUCH) { navigator.share({ title: "Вариант " + vcode() + " — matbank.ru", url: url }).catch(function () {}); return; }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(function () { done("ссылка скопирована"); }, function () { prompt("Ссылка на вариант:", url); });
+      else prompt("Ссылка на вариант:", url);
+    };
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      if (b.hasAttribute("data-vsrc")) {
+        var k = b.getAttribute("data-vsrc"), i = vs.src.indexOf(k);
+        if (i >= 0) { if (vs.src.length > 1) vs.src.splice(i, 1); } else vs.src.push(k);
+        store(EXKEY + "vsrc", JSON.stringify(vs.src)); drawSrc(); fresh();
+      } else if (b.hasAttribute("data-vrep")) {
+        var no = +b.getAttribute("data-vrep"); vs.pick[no] = rnd(pool(no), vs.pick[no]).id; renderSlot(no);
+      } else if (b.hasAttribute("data-vpick")) openPick(+b.getAttribute("data-vpick"), b);
+      else if (b.hasAttribute("data-take")) {
+        var n2 = +b.getAttribute("data-no"); vs.pick[n2] = b.getAttribute("data-take"); renderSlot(n2);
+        var sl = box.querySelector('[data-slot="' + n2 + '"]'); if (sl) sl.scrollIntoView({ block: "start", behavior: "smooth" });
+      } else if (b.classList.contains("vc-more")) { var p = b.closest(".vpick"); if (p && p._more) p._more(); }
+    });
+    document.getElementById("vnew").addEventListener("click", fresh);
+    document.getElementById("vshare").addEventListener("click", share);
     document.getElementById("vprint").addEventListener("click", function () {
       printWithKeys(box, document.getElementById("vkeys"), document.getElementById("vanswers").checked);
     });
-    build();
+    drawSrc();
+    box.innerHTML = '<p class="wait" style="padding:24px 0">Собираю вариант…</p>';
+    Promise.all(nums.map(function (n) { return load(n.no); })).then(function (ls) {
+      nums.forEach(function (n, i) { lists[n.no] = ls[i]; });
+      var m = /#v=([^&]*)/.exec(location.hash), ok = false;
+      if (m) {
+        var ids = decodeURIComponent(m[1]).split(".");
+        nums.forEach(function (n, i) { if (ids[i] && byId(n.no, ids[i])) { vs.pick[n.no] = ids[i]; ok = true; } });
+        nums.forEach(function (n) { if (!vs.pick[n.no] && pool(n.no).length) vs.pick[n.no] = rnd(pool(n.no)).id; });
+      }
+      if (ok) render(); else fresh();
+    }).catch(function () {
+      box.innerHTML = '<p class="wait" style="padding:24px 0">Не удалось загрузить задания. Обновите страницу.</p>';
+    });
+  }
+
+  /* ---------- поиск задач по тексту условия ---------- */
+  var sform = document.getElementById("sForm");
+  if (sform) {
+    var SN = JSON.parse(sform.getAttribute("data-nums")), SS = JSON.parse(sform.getAttribute("data-src"));
+    var sst = { src: SS.map(function (x) { return x.key; }) };
+    var $q = document.getElementById("sQ"), $sum = document.getElementById("sSum"), $sl = document.getElementById("sList"),
+      $mb = document.getElementById("sMoreBox"), $ss = document.getElementById("sSrc");
+    var IDX = null, found = [], sshown = 0;
+    var nOfS = function (no) { return SN.filter(function (n) { return n.no === no; })[0]; };
+    var drawSS = function () {
+      $ss.innerHTML = SS.map(function (x) {
+        return '<button type="button" class="chip src' + (sst.src.indexOf(x.key) >= 0 ? " on" : "") + '" data-ssrc="' + esc(x.key) + '">' + esc(x.name) + "</button>";
+      }).join("");
+    };
+    var normQ = function (q) { return q.toLowerCase().replace(/ё/g, "е").replace(/(\d)[.,](\d)/g, "$1,$2").replace(/[^0-9a-zа-я,\s-]/g, " ").trim(); };
+    var stem = function (w) { return w.length <= 4 ? w : w.slice(0, w.length - (w.length > 6 ? 3 : 2)); };
+    var reEsc = function (x) { return x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); };
+    var tokens = function (q) {
+      return normQ(q).split(/\s+/).filter(Boolean).map(function (w) {
+        w = w.replace(/^[-,]+|[-,]+$/g, ""); if (!w) return null;
+        if (/^-?\d+(,\d+)?$/.test(w)) return new RegExp("(^|[^0-9,])" + reEsc(w) + "(?![0-9]|,[0-9])");
+        if (/^[0-9a-f]{6}$/i.test(w) && /\d/.test(w)) return { id: w.toUpperCase() };
+        return new RegExp("(^|[^0-9a-zа-я])" + reEsc(stem(w)));
+      }).filter(Boolean);
+    };
+    var run = function (q, push) {
+      q = (q || "").trim();
+      if (push) { try { history.replaceState(null, "", location.pathname + (q ? "?q=" + encodeURIComponent(q) : "")); } catch (e) {} }
+      if (!q) { $sum.hidden = true; $sl.hidden = true; $mb.hidden = true; return; }
+      var tk = tokens(q);
+      var go = function () {
+        var full = [], part = [], best = 0;
+        IDX.forEach(function (r) {
+          if (sst.src.indexOf(r[2]) < 0) return;
+          var hit = 0;
+          tk.forEach(function (t) { if (t.id ? r[1].toUpperCase() === t.id : t.test(r[3])) hit++; });
+          if (hit === tk.length) full.push(r); else if (hit > 0) { if (hit > best) { best = hit; part = []; } if (hit === best) part.push(r); }
+        });
+        var exact = full.length > 0;
+        found = exact ? full : (tk.length > 1 ? part : []);
+        found.sort(function (a, b) { return a[0] - b[0]; });
+        sshown = 0;
+        $sum.hidden = false;
+        $sum.innerHTML = found.length
+          ? (exact ? "Найдено: <b>" + found.length + "</b> " + word(found.length) : "Точных совпадений нет. Похожие задачи: <b>" + found.length + "</b>") +
+            " · " + esc(q)
+          : "Ничего не нашлось по запросу «" + esc(q) + "». Попробуйте другие слова или уберите числа.";
+        $sl.innerHTML = ""; $sl.hidden = !found.length;
+        more();
+      };
+      if (IDX) go();
+      else {
+        $sum.hidden = false; $sum.textContent = "Ищу…";
+        fetch("../data/search.json").then(function (r) { return r.json(); }).then(function (d) { IDX = d; go(); })
+          .catch(function () { $sum.textContent = "Не удалось загрузить поиск. Обновите страницу."; });
+      }
+    };
+    var word = function (n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? "задача" : a >= 2 && a <= 4 && (b < 12 || b > 14) ? "задачи" : "задач"; };
+    var more = function () {
+      var part = found.slice(sshown, sshown + 20);
+      var need = part.map(function (r) { return r[0]; }).filter(function (v, i, a) { return a.indexOf(v) === i; });
+      Promise.all(need.map(load)).then(function () {
+        var h = "";
+        part.forEach(function (r) {
+          var n = nOfS(r[0]), t = (cache[r[0]] || []).filter(function (x) { return x.id === r[1]; })[0];
+          if (n && t) h += taskHtml(n, t, n.lab || n.no, true);
+        });
+        $sl.insertAdjacentHTML("beforeend", h);
+        prepAnswers($sl);
+        typeset($sl);
+        sshown += part.length;
+        $mb.hidden = sshown >= found.length;
+      });
+    };
+    sform.addEventListener("submit", function (e) { e.preventDefault(); run($q.value, true); });
+    document.getElementById("sMore").addEventListener("click", more);
+    $ss.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-ssrc]"); if (!b) return;
+      var k = b.getAttribute("data-ssrc"), i = sst.src.indexOf(k);
+      if (i >= 0) { if (sst.src.length > 1) sst.src.splice(i, 1); } else sst.src.push(k);
+      drawSS(); run($q.value, false);
+    });
+    drawSS();
+    var q0 = new URLSearchParams(location.search).get("q") || "";
+    $q.value = q0;
+    if (q0) run(q0, false); else $q.focus();
   }
 
   /* ---------- тренировка: свои подборки ---------- */
