@@ -457,7 +457,7 @@
       for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
       return h.toString(36).toUpperCase().slice(0, 6);
     };
-    var link = function () { return location.href.split("#")[0] + "#v=" + nums.map(function (n) { return vs.pick[n.no] || ""; }).join("."); };
+    var link = function () { return location.href.split("#")[0] + "#v=" + nums.map(function (n) { return vs.pick[n.no] || ""; }).join(".") + (vs.test ? "&k=1" : ""); };
     var drawSrc = function () {
       $vsrc.innerHTML = VSRC.map(function (x) {
         return '<button type="button" class="chip src' + (vs.src.indexOf(x.key) >= 0 ? " on" : "") + '" data-vsrc="' + esc(x.key) + '" aria-pressed="' + (vs.src.indexOf(x.key) >= 0) + '">' + esc(x.name) + "</button>";
@@ -506,8 +506,11 @@
       box.classList.toggle("vlock", on);
       document.getElementById("vro").hidden = !on;
       if (on) document.getElementById("vanswers").checked = false;
+      var kt = on && vs.test;
+      box.classList.toggle("vtest-on", kt);
+      if (kt) document.getElementById("vroText").innerHTML = "<b>Контрольная работа.</b> Вариант собрал учитель: задачи поменять нельзя, проверки ответов нет — запишите решения и ответы, проверит учитель. Вариант можно скачать или распечатать.";
     };
-    document.getElementById("vown").addEventListener("click", function () { lock(false); fresh(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+    document.getElementById("vown").addEventListener("click", function () { vs.test = false; document.getElementById("vtest").checked = false; box.classList.remove("vtest-on"); lock(false); fresh(); window.scrollTo({ top: 0, behavior: "smooth" }); });
     var fresh = function () { nums.forEach(function (n) { var l = pool(n.no); if (l.length) vs.pick[n.no] = rnd(l).id; }); render(); };
     // окно выбора задачи: отдельный слой поверх страницы, фон размыт — список не смешивается с вариантом
     var dlg = null, dlgNo = 0, dlgObs = null, lastBtn = null;
@@ -591,6 +594,12 @@
       }
     });
     document.getElementById("vnew").addEventListener("click", function () { if (!vs.locked) fresh(); });
+    document.getElementById("vtest").addEventListener("change", function (e) {
+      if (vs.locked) return;
+      vs.test = e.target.checked;
+      try { history.replaceState(null, "", link()); } catch (er) {}
+      $code.innerHTML = "Код варианта: <b>" + vcode() + "</b> · " + (vs.test ? "по ссылке ученики не смогут проверять ответы" : "по ссылке ученики смогут проверять ответы");
+    });
     document.getElementById("vshare").addEventListener("click", share);
     // скачать вариант готовым PDF-файлом: каждая задача — картинкой, задачи не разрываются между страницами
     var loadScript = function (src) {
@@ -666,6 +675,8 @@
     Promise.all(nums.map(function (n) { return load(n.no); })).then(function (ls) {
       nums.forEach(function (n, i) { lists[n.no] = ls[i]; });
       var m = /#v=([^&]*)/.exec(location.hash), ok = false;
+      vs.test = /[#&]k=1(&|$)/.test(location.hash);
+      document.getElementById("vtest").checked = vs.test;
       if (m) {
         var ids = decodeURIComponent(m[1]).split(".");
         nums.forEach(function (n, i) { if (ids[i] && byId(n.no, ids[i])) { vs.pick[n.no] = ids[i]; ok = true; } });

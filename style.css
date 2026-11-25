@@ -896,3 +896,7 @@ html { scroll-behavior: smooth; }
 .pdf-k table { border-collapse: collapse; margin-top: 6px; }
 .pdf-k td { border: 1px solid #bbb; padding: 3px 12px; font-size: 15px; }
 footer .brandline { margin-bottom: 6px; color: var(--ink2); } footer .brandline b { color: var(--ink); }
+/* режим контрольной у ученика: без проверки ответов и без перехода к задаче в банке */
+.vtest-on .check, .vtest-on .verdict, .vtest-on .sol-btn, .vtest-on .ans { display: none !important; }
+.vtest-on .idx { pointer-events: none; }
+.vlock .vtest { display: none !important; }
